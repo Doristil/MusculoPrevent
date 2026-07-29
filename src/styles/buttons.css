@@ -1,0 +1,45 @@
+.btn-primary{
+
+background:var(--primary);
+
+color:white;
+
+padding:14px 24px;
+
+border-radius:14px;
+
+font-weight:600;
+
+transition:.2s;
+}
+
+.btn-primary:hover{
+
+background:#1D4ED8;
+
+transform:translateY(-2px);
+
+}
+
+
+
+.btn-secondary{
+
+background:white;
+
+border:1px solid var(--border);
+
+color:var(--text);
+
+padding:14px 24px;
+
+border-radius:14px;
+
+transition:.2s;
+}
+
+.btn-secondary:hover{
+
+background:#F8FAFC;
+
+}

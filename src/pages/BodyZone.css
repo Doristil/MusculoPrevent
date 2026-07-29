@@ -1,0 +1,46 @@
+.body-container {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 40px;
+}
+
+.body-title {
+  text-align: center;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.body-subtitle {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 40px;
+}
+
+.body-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.body-card {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.body-card:hover {
+  transform: translateY(-6px);
+}
+
+.body-icon {
+  font-size: 42px;
+}
+
+.body-card h2 {
+  margin-top: 15px;
+  color: #0f172a;
+}
