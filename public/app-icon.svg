@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title>MusculoPrevent</title>
+  <defs>
+    <linearGradient id="surface" x1="72" y1="56" x2="444" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5b67ff"/>
+      <stop offset="1" stop-color="#2736c8"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="512" height="512" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#17235d" flood-opacity=".28"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#surface)"/>
+  <path d="M109 261h66l35-105 59 205 45-132h89" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" filter="url(#shadow)"/>
+  <circle cx="109" cy="261" r="16" fill="#cbd1ff"/>
+  <circle cx="403" cy="229" r="16" fill="#cbd1ff"/>
+</svg>
