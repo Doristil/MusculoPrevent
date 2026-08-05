@@ -20,6 +20,51 @@
 
 }
 
+:root[data-theme="dark"]{
+  --background:#10131a;
+  --surface:#171c26;
+  --primary:#7b87ff;
+  --primary-light:#9fa8ff;
+  --text:#f4f6fb;
+  --text-secondary:#aeb7c7;
+  --border:#2c3442;
+  --shadow:0 10px 30px rgba(0,0,0,.28);
+}
+
+/* Contrastes dédiés au mode sombre : aucune information ne repose sur du blanc pur. */
+:root[data-theme="dark"] body,:root[data-theme="dark"] .app{background:#10131a;color:#f4f6fb}
+:root[data-theme="dark"] .card-choice,:root[data-theme="dark"] .job-option,:root[data-theme="dark"] .exercise-card,:root[data-theme="dark"] .body-option,:root[data-theme="dark"] .pain-card,:root[data-theme="dark"] .progress-stats article,:root[data-theme="dark"] .progress-week,:root[data-theme="dark"] .progress-empty,:root[data-theme="dark"] .vector-map-buttons button{background:#171c26!important;border-color:#303847!important;color:#f4f6fb}
+:root[data-theme="dark"] .card-choice h2,:root[data-theme="dark"] .job-option h2,:root[data-theme="dark"] .exercise-content h4,:root[data-theme="dark"] .exercise-zone-title,:root[data-theme="dark"] .pain-card h2,:root[data-theme="dark"] .progress-stats strong,:root[data-theme="dark"] .progress-week h2,:root[data-theme="dark"] .progress-empty h2{color:#f4f6fb!important}
+:root[data-theme="dark"] input,:root[data-theme="dark"] select,:root[data-theme="dark"] .profile-level-options,:root[data-theme="dark"] .exercise-filters button,:root[data-theme="dark"] .zone-menu-links button{background:#171c26!important;border-color:#303847!important;color:#f4f6fb!important}
+:root[data-theme="dark"] input::placeholder{color:#8993a5}
+:root[data-theme="dark"] .exercise-image-placeholder,:root[data-theme="dark"] .profile-saved{background:#202738!important;color:#aeb8ff}
+:root[data-theme="dark"] .zone-menu{background:rgba(16,19,26,.94)}
+:root[data-theme="dark"] .exercise-player{background:#10131a;color:#f4f6fb}
+:root[data-theme="dark"] .player-content h1,:root[data-theme="dark"] .player-close,:root[data-theme="dark"] .player-secondary-button{color:#f4f6fb}
+:root[data-theme="dark"] .player-secondary-button,:root[data-theme="dark"] .player-home{background:#171c26;border-color:#303847}
+:root[data-theme="dark"] .player-progress-toggle,:root[data-theme="dark"] .player-progress-content{background:#171c26;border-color:#303847}:root[data-theme="dark"] .player-progress-toggle,:root[data-theme="dark"] .player-session-time,:root[data-theme="dark"] .player-progress-stats b{color:#f4f6fb}:root[data-theme="dark"] .player-progress-remaining{border-color:#303847}
+:root[data-theme="dark"] .timer-center{background:#10131a}
+:root[data-theme="dark"] .timer-track{stroke:#303847}
+:root[data-theme="dark"] .progress-summary{background:#202738}
+:root[data-theme="dark"] .anatomy-zone-buttons button{background:#171c26;border-color:#303847;color:#f4f6fb}
+:root[data-theme="dark"] .bottom-nav{background:rgba(23,28,38,.96);border-color:#303847;box-shadow:0 12px 30px rgba(0,0,0,.34)}
+:root[data-theme="dark"] .bottom-nav>button:hover{background:#242b38}
+:root[data-theme="dark"] .bottom-nav>button.is-active{background:#f4f6fb;color:#10131a}
+:root[data-theme="dark"] .profile-step h1,:root[data-theme="dark"] .profile-intro,:root[data-theme="dark"] .profile-step-label,:root[data-theme="dark"] .profile-field span,:root[data-theme="dark"] .profile-field legend,:root[data-theme="dark"] .profile-jobs-label,:root[data-theme="dark"] .job-option h2{color:var(--text)!important}
+:root[data-theme="dark"] .profile-level-options button{color:var(--text-secondary)}
+:root[data-theme="dark"] .profile-level-options button.is-selected{background:#7b87ff;color:#10131a}
+:root[data-theme="dark"] .profile-archive{background:#171c26;border-color:#303847}:root[data-theme="dark"] .profile-archive-selector{background:#202738;border-color:#3a4353}:root[data-theme="dark"] .profile-archive-selector select{color:#f4f6fb}:root[data-theme="dark"] .profile-archive-avatar{background:#303a68;color:#d7ddff}:root[data-theme="dark"] .profile-archive-delete{border-color:#3a4353;color:#aeb7c7}
+:root[data-theme="dark"] .profile-delete-active{border-color:#754848;background:#2b2024;color:#f2b5b5}
+:root[data-theme="dark"] .job-icon,:root[data-theme="dark"] .profile-intro{color:var(--text-secondary)!important}
+:root[data-theme="dark"] .pain-zone-links button,:root[data-theme="dark"] .week-days span,:root[data-theme="dark"] .series-dots span{background:#202738;border-color:#3a4353;color:var(--text)}
+:root[data-theme="dark"] .pain-warning{color:#f2c879}
+:root[data-theme="dark"] .progress-profile{border-color:#3a4353;background:#202738;color:#b5bfd0}:root[data-theme="dark"] .progress-profile-avatar{background:#303a68;color:#d7ddff}:root[data-theme="dark"] .progress-profile select{background-color:#171c26;color:#f4f6fb}
+:root[data-theme="dark"] .exercise-filters button.is-active{background:#28315a!important;color:#cbd2ff!important}
+:root[data-theme="dark"] .session-picker{border-color:#303847;background:#171c26}:root[data-theme="dark"] .session-picker-actions button{border-color:#3a4353;background:#202738;color:#f4f6fb}
+:root[data-theme="dark"] .badge{background:#28315a!important;color:#cbd2ff!important}
+:root[data-theme="dark"] .body-base{fill:#242b38;stroke:#4a5568}:root[data-theme="dark"] .body-base .body-arm,:root[data-theme="dark"] .body-base .body-leg,:root[data-theme="dark"] .body-base .body-neck{fill:#202738}:root[data-theme="dark"] .muscle-zone path{fill:#374151;stroke:#596579}:root[data-theme="dark"] .vector-map text{fill:#c3cbda}
+:root[data-theme="dark"] .header-back-button:hover{background:#202738}
+
 *{
 margin:0;
 padding:0;

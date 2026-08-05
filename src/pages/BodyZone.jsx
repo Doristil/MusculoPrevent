@@ -1,51 +1,27 @@
-import Header from "../components/Header";
 import "./BodyZone.css";
 import bodyZones from "../data/bodyZones";
 import { useNavigate } from "react-router-dom";
+import BodyMap from "../components/BodyMap";
+import { useTranslation } from "../i18n";
 
 function BodyZone() {
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
-    <>
-      <Header />
+      <section className="zone-page">
 
-      <div className="card zone-card">
-
-        <h1 className="body-title">
-          Choisissez une zone musculaire
-        </h1>
+        <p className="page-eyebrow">{t("zoneSearch")}</p>
+        <h1 className="body-title">{t("zoneQuestion")}</h1>
 
         <p className="body-subtitle">
-          Sélectionnez la région du corps que vous souhaitez renforcer.
+          {t("zoneHelp")}
         </p>
 
-        <div className="body-grid">
+        <BodyMap zones={bodyZones} onSelect={(zone) => navigate(`/exercises/body/${zone.slug}`)} />
 
-          {bodyZones.map((zone) => (
-
-            <div
-              key={zone.id}
-              className="body-card"
-              onClick={() => navigate("/exercises")}
-            >
-
-              <div className="body-icon">
-                {zone.icon}
-              </div>
-
-              <h2>{zone.name}</h2>
-
-            </div>
-
-          ))}
-
-        </div>
-
-      </div>
-
-    </>
+      </section>
   );
 }
 

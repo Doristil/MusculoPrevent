@@ -1,63 +1,63 @@
 import "./SearchMode.css";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import { ArrowRight, BriefcaseBusiness, Crosshair } from "lucide-react";
+import { useTranslation } from "../i18n";
 
 function SearchMode() {
 
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
 
-        <>
-            <Header />
+            <section className="search-page">
 
-            <div className="card search-card">
+                <p className="page-eyebrow">{t("library")}</p>
+                <h1>{t("howStart")}</h1>
 
-                <h1>Choisir un mode de recherche</h1>
-
-                <p>
-                    Comment souhaitez-vous rechercher vos exercices ?
-                </p>
+                <p className="page-intro">{t("choosePath")}</p>
 
                 <div className="cards">
 
-                    <div
+                    <button
+                        type="button"
                         className="card-choice"
                         onClick={() => navigate("/job")}
                     >
 
-                        <div className="icon">⚓</div>
+                        <BriefcaseBusiness className="choice-icon" strokeWidth={1.7} />
 
-                        <h2>Par poste</h2>
+                        <span className="choice-kicker">{t("byJob")}</span>
+                        <h2>{t("byJobTitle")}</h2>
 
                         <p>
-                            Trouver les exercices selon votre fonction
-                            à bord.
+                            {t("byJobText")}
                         </p>
+                        <ArrowRight className="choice-arrow" size={20} />
 
-                    </div>
+                    </button>
 
-                    <div
+                    <button
+                        type="button"
                         className="card-choice"
                         onClick={() => navigate("/body-zone")}
                     >
 
-                        <div className="icon">💪</div>
+                        <Crosshair className="choice-icon" strokeWidth={1.7} />
 
-                        <h2>Par zone musculaire</h2>
+                        <span className="choice-kicker">{t("byZone")}</span>
+                        <h2>{t("byZoneTitle")}</h2>
 
                         <p>
-                            Trouver les exercices selon la zone
-                            du corps à renforcer.
+                            {t("byZoneText")}
                         </p>
+                        <ArrowRight className="choice-arrow" size={20} />
 
-                    </div>
+                    </button>
 
                 </div>
 
-            </div>
-
-        </>
+            </section>
     );
 }
 

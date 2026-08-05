@@ -8,11 +8,17 @@ background:var(--background);
 
 .page-container{
 
-max-width:1300px;
+width:min(100%, 1040px);
 
 margin:auto;
 
-padding:40px;
+padding:28px 32px 112px;
+
+}
+
+.exercise-player-layout{
+
+min-height:100vh;
 
 }
 

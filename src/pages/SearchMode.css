@@ -1,54 +1,8 @@
-.search-container {
-  min-height: 100vh;
-  background: #f8fafc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 50px 20px;
-}
-
-.search-container h1 {
-  color: #0f172a;
-  margin-bottom: 10px;
-}
-
-.search-container p {
-  color: #64748b;
-  margin-bottom: 40px;
-  text-align: center;
-}
-
-.cards {
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.card-choice {
-  width: 320px;
-  background: white;
-  border-radius: 16px;
-  padding: 30px;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  transition: 0.25s;
-  text-align: center;
-}
-
-.card-choice:hover {
-  transform: translateY(-5px);
-}
-
-.icon {
-  font-size: 50px;
-}
-
-.card-choice h2 {
-  margin: 20px 0 10px;
-  color: #0f172a;
-}
-
-.card-choice p {
-  margin: 0;
-}
+.search-page{width:min(100%,760px);margin:0 auto;padding:clamp(28px,5vw,64px) 0;text-align:center;}
+.page-eyebrow{color:var(--primary);font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;}
+.search-page h1{max-width:620px;margin:16px auto;font-size:clamp(2.3rem,5vw,3.5rem);letter-spacing:-.06em;line-height:1;color:var(--text);}
+.page-intro{max-width:540px;margin:auto;color:var(--text-secondary);font-size:17px;line-height:1.5;}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:36px;text-align:left;}
+.card-choice{position:relative;min-height:235px;padding:24px;border:1px solid var(--border);border-radius:14px;background:transparent;color:var(--text);text-align:left;transition:border-color .2s,background .2s,transform .2s;}
+.card-choice:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);}.choice-icon{color:var(--primary);}.choice-kicker{display:block;margin-top:28px;color:var(--text-secondary);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;}.card-choice h2{margin:8px 0;font-size:21px;letter-spacing:-.03em;}.card-choice p{max-width:260px;color:var(--text-secondary);font-size:15px;line-height:1.5;}.choice-arrow{position:absolute;right:20px;bottom:20px;color:var(--primary);}
+@media(max-width:650px){.cards{grid-template-columns:1fr;margin-top:32px;}.card-choice{min-height:210px;}.choice-kicker{margin-top:22px;}}

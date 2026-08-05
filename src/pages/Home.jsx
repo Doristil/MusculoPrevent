@@ -1,41 +1,32 @@
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import { ArrowRight } from "lucide-react";
+import { useTranslation } from "../i18n";
 import "./Home.css";
 
 function Home() {
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
-    <>
-      <Header />
+      <section className="home-hero">
+        <div className="home-content">
+          <p className="home-eyebrow">{t("homeEyebrow")}</p>
 
-      <div className="card home-card">
+          <h1>{t("homeTitle")}</h1>
 
-        <div className="card">
-
-          <h1>⚓ MusculoPrevent</h1>
-
-          <h2>
-            Prévention des Troubles Musculo-Squelettiques
-          </h2>
-
-          <p>
-            Application permettant de créer un programme de
-            renforcement musculaire personnalisé selon le poste
-            occupé à bord d'un navire.
+          <p className="home-description">
+            {t("homeDescription")}
           </p>
 
-          <button onClick={() => navigate("/search")}>
-            Commencer
-          </button>
-
+          <div className="home-actions">
+            <button className="home-start" onClick={() => navigate("/search")}>
+              {t("start")} <ArrowRight size={20} aria-hidden="true" />
+            </button>
+          </div>
         </div>
-
-      </div>
-    </>
+      </section>
   );
 }
 
 export default Home;
-
