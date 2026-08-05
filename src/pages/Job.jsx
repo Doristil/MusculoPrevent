@@ -101,7 +101,6 @@ function Job() {
 
             <section className="profile-step">
 
-                <p className="profile-step-label">{t("step")}</p>
 
                 <h1>{t("yourProfile")}</h1>
                 <p className="profile-intro">{t("profileIntro")}</p>
