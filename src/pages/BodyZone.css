@@ -1,1 +1,13 @@
-.zone-page{width:min(100%,780px);margin:0 auto;padding:clamp(28px,5vw,64px) 0;text-align:center;}.body-title{max-width:650px;margin:16px auto;font-size:clamp(2.3rem,5vw,3.5rem);letter-spacing:-.06em;line-height:1;color:var(--text);}.body-subtitle{max-width:540px;margin:auto;color:var(--text-secondary);font-size:17px;line-height:1.5;}.body-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin-top:36px;text-align:left;border-top:1px solid var(--border);border-left:1px solid var(--border);}.body-option{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;min-height:82px;padding:18px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);background:transparent;color:var(--text);text-align:left;transition:background .2s,color .2s;}.body-option:hover{background:#fff;color:var(--primary);}.body-index{color:var(--text-secondary);font-size:12px;font-weight:800;letter-spacing:.08em;}.body-option h2{font-size:17px;letter-spacing:-.02em;}@media(max-width:650px){.body-grid{grid-template-columns:1fr;margin-top:32px;}.body-option{min-height:76px;padding:16px;}}
+.zone-page { width: min(100%, 780px); margin: 0 auto; padding: clamp(28px, 5vw, 64px) 0; text-align: center; }
+.body-title { max-width: 650px; margin: 16px auto; font-size: clamp(2.3rem, 5vw, 3.5rem); letter-spacing: -.06em; line-height: 1; color: var(--text); }
+.body-subtitle { max-width: 540px; margin: auto; color: var(--text-secondary); font-size: 17px; line-height: 1.5; }
+
+.zone-selection-actions { display: flex; align-items: center; justify-content: space-between; gap: 18px; width: min(100%, 680px); margin: 28px auto 0; padding: 15px 17px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); text-align: left; }
+.zone-selection-actions p { margin: 0; color: var(--text-secondary); font-size: 14px; font-weight: 650; }
+.zone-selection-actions button { flex: 0 0 auto; border: 0; border-radius: 10px; background: var(--primary); color: #fff; padding: 12px 16px; font-size: 14px; font-weight: 750; }
+.zone-selection-actions button:disabled { cursor: not-allowed; opacity: .45; }
+
+@media (max-width: 560px) {
+  .zone-selection-actions { align-items: stretch; flex-direction: column; }
+  .zone-selection-actions button { width: 100%; }
+}

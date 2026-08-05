@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import exercises from "../data/exercises";
-import { displayZoneName, exerciseHref, getExerciseScope } from "../utils/exerciseScope";
+import { exerciseHref, getExerciseScope } from "../utils/exerciseScope";
+import { localizedExerciseZone } from "../utils/localize";
 import catalogTranslations from "../data/catalogTranslations";
 import { useTranslation } from "../i18n";
 import { recordExercise } from "../utils/activity";
@@ -25,8 +26,6 @@ function formatDuration(totalSeconds) {
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
 
-const REST_DURATION = 20;
-
 export default function ExerciseDetail() {
   const { id } = useParams();
   const location = useLocation();
@@ -44,7 +43,11 @@ export default function ExerciseDetail() {
   const currentIndex = scopedExercises.findIndex((item) => item.id === id);
   const holdSeconds = getHoldSeconds(exercise?.hold);
   const isTimed = holdSeconds !== null;
-  const sessionKey = `musculoprevent-session:${scope}:${value}`;
+  const restDuration = Math.min(90, Math.max(5, Number(query.get("rest")) || 20));
+  const seriesDelta = Math.min(2, Math.max(-1, Number(query.get("seriesDelta")) || 0));
+  const exerciseSets = Math.max(1, Math.min(6, (Number(exercise?.sets) || 1) + seriesDelta));
+  const sessionSettings = useMemo(() => ({ restSeconds: restDuration, seriesDelta }), [restDuration, seriesDelta]);
+  const sessionKey = `musculoprevent-session:${scope}:${value}:${restDuration}:${seriesDelta}`;
   const [series, setSeries] = useState(1);
   const [secondsLeft, setSecondsLeft] = useState(holdSeconds ?? 0);
   const [isPaused, setIsPaused] = useState(false);
@@ -87,17 +90,17 @@ export default function ExerciseDetail() {
   const goToExercise = useCallback((index) => {
     const nextExercise = scopedExercises[index];
     if (nextExercise) {
-      navigate(exerciseHref(nextExercise.id, scope, value, sessionIds), { replace: true });
+      navigate(exerciseHref(nextExercise.id, scope, value, sessionIds, sessionSettings), { replace: true });
     } else {
       setIsFinished(true);
     }
-  }, [navigate, scope, scopedExercises, sessionIds, value]);
+  }, [navigate, scope, scopedExercises, sessionIds, sessionSettings, value]);
 
   const startRest = useCallback((nextStep) => {
     setPendingStep(nextStep);
-    setRestSeconds(REST_DURATION);
+    setRestSeconds(restDuration);
     setIsPaused(false);
-  }, []);
+  }, [restDuration]);
 
   const finishRest = useCallback(() => {
     if (pendingStep === "next-series") {
@@ -111,7 +114,7 @@ export default function ExerciseDetail() {
   }, [currentIndex, goToExercise, holdSeconds, pendingStep]);
 
   const completeSeries = useCallback(() => {
-    if (series < exercise.sets) {
+    if (series < exerciseSets) {
       startRest("next-series");
       return;
     }
@@ -124,7 +127,7 @@ export default function ExerciseDetail() {
 
     recordExercise(exercise, { id: sessionId, startedAt: new Date(sessionStartedAt).toISOString(), context: `${scope}:${value}` });
     setIsFinished(true);
-  }, [currentIndex, exercise, scopedExercises, series, sessionId, sessionStartedAt, scope, startRest, value]);
+  }, [currentIndex, exercise, exerciseSets, scopedExercises, series, sessionId, sessionStartedAt, scope, startRest, value]);
 
   useEffect(() => {
     if (!isTimed || isPaused || isFinished || restSeconds !== null) return undefined;
@@ -167,15 +170,16 @@ export default function ExerciseDetail() {
 
   const isResting = restSeconds !== null;
   const displayedSeconds = isResting ? restSeconds : secondsLeft;
-  const displayedDuration = isResting ? REST_DURATION : holdSeconds;
+  const displayedDuration = isResting ? restDuration : holdSeconds;
   const progress = (isResting || isTimed) && displayedDuration ? ((displayedDuration - displayedSeconds) / displayedDuration) * 100 : 0;
   const hasPrevious = currentIndex > 0;
-  const totalSets = scopedExercises.reduce((total, item) => total + item.sets, 0);
-  const completedSetsBefore = scopedExercises.slice(0, currentIndex).reduce((total, item) => total + item.sets, 0);
-  const completedCurrentSets = Math.min(exercise.sets, isResting ? series : series - 1);
+  const setsFor = (item) => Math.max(1, Math.min(6, (Number(item.sets) || 1) + seriesDelta));
+  const totalSets = scopedExercises.reduce((total, item) => total + setsFor(item), 0);
+  const completedSetsBefore = scopedExercises.slice(0, currentIndex).reduce((total, item) => total + setsFor(item), 0);
+  const completedCurrentSets = Math.min(exerciseSets, isResting ? series : series - 1);
   const completedSets = completedSetsBefore + completedCurrentSets;
-  const totalReps = scopedExercises.reduce((total, item) => total + (getRepCount(item.reps) * item.sets), 0);
-  const completedRepsBefore = scopedExercises.slice(0, currentIndex).reduce((total, item) => total + (getRepCount(item.reps) * item.sets), 0);
+  const totalReps = scopedExercises.reduce((total, item) => total + (getRepCount(item.reps) * setsFor(item)), 0);
+  const completedRepsBefore = scopedExercises.slice(0, currentIndex).reduce((total, item) => total + (getRepCount(item.reps) * setsFor(item)), 0);
   const completedReps = completedRepsBefore + (getRepCount(exercise.reps) * completedCurrentSets);
   const completedExercises = Math.min(scopedExercises.length, currentIndex + (isResting && pendingStep === "next-exercise" ? 1 : 0));
 
@@ -199,9 +203,9 @@ export default function ExerciseDetail() {
       </header>
 
       <section className="player-content">
-        <p className="exercise-overline">{isResting ? t("recovery") : `${displayZoneName(exercise.zone)} · ${t("series", { current: series, total: exercise.sets })}`}</p>
-        <h1>{isResting ? t("restTitle") : translatedExercise.name ?? exercise.name}</h1>
-        {!isResting && <p className="player-safety-note">Prévention : restez dans une amplitude confortable et arrêtez l’exercice en cas de douleur.</p>}
+        <p className="exercise-overline">{isResting ? t("recovery") : `${localizedExerciseZone(exercise.zone, t)} · ${t("series", { current: series, total: exerciseSets })}`}</p>
+        <h1>{isResting ? t("restTitle", { count: restDuration }) : translatedExercise.name ?? exercise.name}</h1>
+        {!isResting && <p className="player-safety-note">{t("safetyNote")}</p>}
 
         <div className="timer-area">
           <div className={`timer-ring ${(isTimed || isResting) ? "" : "timer-ring-manual"}`} style={{ "--progress": `${progress}%` }}>
@@ -221,8 +225,8 @@ export default function ExerciseDetail() {
             </div>
           </div>
           <p className="timer-label">{isResting ? t("recovery") : isTimed ? t("hold") : t("repsToDo")}</p>
-          <div className="series-dots" aria-label={`Série ${series} sur ${exercise.sets}`}>
-            {Array.from({ length: exercise.sets }, (_, index) => <span key={index} className={index < series ? "series-dot-active" : ""} />)}
+          <div className="series-dots" aria-label={t("seriesAria", { current: series, total: exerciseSets })}>
+            {Array.from({ length: exerciseSets }, (_, index) => <span key={index} className={index < series ? "series-dot-active" : ""} />)}
           </div>
         </div>
 

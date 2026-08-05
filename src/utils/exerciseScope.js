@@ -35,6 +35,19 @@ export function getExerciseScope(scope, value) {
     };
   }
 
+  if (scope === "zones") {
+    const selectedBodyZones = String(value ?? "").split(",")
+      .map((slug) => bodyZones.find((item) => item.slug === slug))
+      .filter(Boolean);
+    const scopedExercises = exercises.filter((exercise) => selectedBodyZones.some((bodyZone) => matchesBodyZone(exercise, bodyZone)));
+    return {
+      context: selectedBodyZones.length ? `Zones : ${selectedBodyZones.map((zone) => zone.name).join(", ")}` : "Zones inconnues",
+      selectedZones: [...new Set(scopedExercises.map((exercise) => exercise.zone))],
+      exercises: scopedExercises,
+      returnTo: "/body-zone",
+    };
+  }
+
   return {
     context: "Tous les exercices",
     selectedZones: [...new Set(exercises.map((exercise) => exercise.zone))],
@@ -43,9 +56,11 @@ export function getExerciseScope(scope, value) {
   };
 }
 
-export function exerciseHref(id, scope, value, sessionIds = []) {
+export function exerciseHref(id, scope, value, sessionIds = [], settings = {}) {
   const query = new URLSearchParams({ scope, value });
   if (sessionIds.length) query.set("session", sessionIds.join(","));
+  if (settings.restSeconds) query.set("rest", String(settings.restSeconds));
+  if (settings.seriesDelta) query.set("seriesDelta", String(settings.seriesDelta));
   return `/exercise/${id}?${query.toString()}`;
 }
 

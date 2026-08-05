@@ -8,11 +8,11 @@ background:var(--background);
 
 .page-container{
 
-width:min(100%, 1040px);
+width:min(100%, 1200px);
 
 margin:auto;
 
-padding:28px 32px 112px;
+padding:38px 32px 126px;
 
 }
 

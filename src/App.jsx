@@ -58,6 +58,7 @@ function App() {
             path="/exercises/body/:zone"
             element={<Exercises />}
           />
+          <Route path="/exercises/zones/:zones" element={<Exercises />} />
 
           <Route
             path="/exercise/:id"

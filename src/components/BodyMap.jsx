@@ -1,6 +1,8 @@
 import { useState } from "react";
 import exercises from "../data/exercises";
 import { matchesBodyZone } from "../utils/exerciseScope";
+import { localizedBodyZone } from "../utils/localize";
+import { useTranslation } from "../i18n";
 import "./BodyMap.css";
 
 // Les tracés suivent directement le dessin du corps : ils restent donc parfaitement alignés
@@ -11,11 +13,11 @@ const shapes = {
   "avant-bras": ["M90 211c-8 21-10 47-5 68l15 6c8-21 11-45 7-68z", "M210 211c8 21 10 47 5 68l-15 6c-8-21-11-45-7-68z", "M390 211c-8 21-10 47-5 68l15 6c8-21 11-45 7-68z", "M510 211c8 21 10 47 5 68l-15 6c-8-21-11-45-7-68z"],
   "main-poignet": ["M84 278c-5 11-4 29 2 40l12 7 6-11-2-30z", "M216 278c5 11 4 29-2 40l-12 7-6-11 2-30z", "M384 278c-5 11-4 29 2 40l12 7 6-11-2-30z", "M516 278c5 11 4 29-2 40l-12 7-6-11 2-30z"],
   abdominaux: ["M126 171c7-4 15-5 22-2v25h-23z", "M152 169c7-3 15-2 22 2l1 23h-23z", "M125 199h23v27h-24c-1-9-1-18 1-27z", "M152 199h23c2 9 2 18 1 27h-24z", "M125 230h23v31h-21c-2-10-3-20-2-31z", "M152 230h23c1 11 0 21-2 31h-21z"],
-  pectoraux: ["M112 142c10-10 25-13 37-7v25c-14 0-28-5-37-15z", "M188 142c-10-10-25-13-37-7v25c14 0 28-5 37-15z"],
+  pectoraux: ["M111 119c11-10 26-13 38-6v42c-15-1-29-8-38-22z", "M189 119c-11-10-26-13-38-6v42c15-1 29-8 38-22z"],
   jambes: ["M118 282c-13 32-13 75 1 111l25-1 4-106c-11-5-20-6-30-4z", "M182 282c13 32 13 75-1 111l-25-1-4-106c11-5 20-6 30-4z", "M418 282c-13 32-13 75 1 111l25-1 4-106c-11-5-20-6-30-4z", "M482 282c13 32 13 75-1 111l-25-1-4-106c11-5 20-6 30-4z"],
-  trapezes: ["M450 92c-14 4-28 13-38 27 8 10 18 19 29 29 4 5 7 10 9 16z", "M450 92c14 4 28 13 38 27-8 10-18 19-29 29-4 5-7 10-9 16z"],
-  dos: ["M410 173c11 8 25 13 40 15 15-2 29-7 40-15l8 91c-14 13-30 19-48 20-18-1-34-7-48-20z"],
-  lombaires: ["M414 262c12 12 24 17 36 18 12-1 24-6 36-18l5 43c-13 13-27 19-41 19-14 0-28-6-41-19z"],
+  trapezes: ["M450 76c-13 5-27 14-39 27l9 13c8 10 18 19 29 27l1 24 10-15c1-13 0-27-3-40-2-15-4-27-7-36z", "M450 76c13 5 27 14 39 27l-9 13c-8 10-18 19-29 27l-1 24-10-15c-1-13 0-27 3-40 2-15 4-27 7-36z"],
+  dos: ["M418 132c9 7 20 11 32 13 12-2 23-6 32-13l6 83c-11 13-24 19-38 20-14-1-27-7-38-20z"],
+  lombaires: ["M414 229c12 10 24 15 36 16 12-1 24-6 36-16l4 35c-12 12-25 18-40 19-15-1-28-7-40-19z"],
   mollets: ["M121 392c-7 29-7 66 0 103l18 6c10-30 9-66 1-106z", "M179 392c7 29 7 66 0 103l-18 6c-10-30-9-66-1-106z", "M421 392c-7 29-7 66 0 103l18 6c10-30 9-66 1-106z", "M479 392c7 29 7 66 0 103l-18 6c-10-30-9-66-1-106z"],
 };
 const backOnlyZones = new Set(["trapezes", "dos", "lombaires"]);
@@ -36,18 +38,25 @@ function BaseBody({ x, back = false }) {
   </g>;
 }
 
-export default function BodyMap({ zones, onSelect }) {
+export default function BodyMap({ zones, onSelect, selectedSlugs = [] }) {
   const [active, setActive] = useState(null);
+  const { t } = useTranslation();
   const activeZone = zones.find((zone) => zone.slug === active);
   return <section className="vector-map">
-    <svg viewBox="0 0 670 535" role="img" aria-label="Schéma musculaire interactif face et dos">
+    <svg viewBox="0 0 670 535" role="img" aria-label={t("zoneMultiHelp")}>
       <BaseBody x={0} /><BaseBody x={370} back />
-      {zones.map((zone) => <g key={zone.slug} className={active === zone.slug ? "muscle-zone is-active" : "muscle-zone"} onMouseEnter={() => setActive(zone.slug)} onMouseLeave={() => setActive(null)} onClick={() => onSelect(zone)}>
-        {shapes[zone.slug]?.map((d, index) => <path key={index} d={d} transform={backOnlyZones.has(zone.slug) || (splitFaceBackZones.has(zone.slug) && index >= 2) ? "translate(70 0)" : undefined} />)}
+      {zones.map((zone) => <g key={zone.slug} className={`muscle-zone${active === zone.slug ? " is-active" : ""}${selectedSlugs.includes(zone.slug) ? " is-selected" : ""}`} onMouseEnter={() => setActive(zone.slug)} onMouseLeave={() => setActive(null)} onClick={() => onSelect(zone)}>
+        {shapes[zone.slug]?.map((d, index) => {
+          const isBack = backOnlyZones.has(zone.slug) || (splitFaceBackZones.has(zone.slug) && index >= 2);
+          const transform = zone.slug === "epaules"
+            ? `translate(${isBack ? 70 : 0} -14)`
+            : isBack ? "translate(70 0)" : undefined;
+          return <path key={index} d={d} transform={transform} />;
+        })}
       </g>)}
-      <text x="150" y="528" textAnchor="middle">FACE</text><text x="520" y="528" textAnchor="middle">DOS</text>
+      <text x="150" y="528" textAnchor="middle">{t("face")}</text><text x="520" y="528" textAnchor="middle">{t("backView")}</text>
     </svg>
-    <p className="vector-map-label">{activeZone ? `${activeZone.name} · ${exercises.filter((item) => matchesBodyZone(item, activeZone)).length} exercices` : "Survolez puis sélectionnez une zone musculaire"}</p>
-    <div className="vector-map-buttons">{zones.map((zone) => <button key={zone.slug} className={active === zone.slug ? "is-active" : ""} type="button" onMouseEnter={() => setActive(zone.slug)} onMouseLeave={() => setActive(null)} onFocus={() => setActive(zone.slug)} onBlur={() => setActive(null)} onClick={() => onSelect(zone)}>{zone.name}</button>)}</div>
+    <p className="vector-map-label">{activeZone ? t("zoneExercises", { zone: localizedBodyZone(activeZone, t), count: exercises.filter((item) => matchesBodyZone(item, activeZone)).length }) : t("selectedMuscleZone")}</p>
+    <div className="vector-map-buttons">{zones.map((zone) => <button key={zone.slug} className={`${active === zone.slug ? "is-active" : ""}${selectedSlugs.includes(zone.slug) ? " is-selected" : ""}`} type="button" aria-pressed={selectedSlugs.includes(zone.slug)} onMouseEnter={() => setActive(zone.slug)} onMouseLeave={() => setActive(null)} onFocus={() => setActive(zone.slug)} onBlur={() => setActive(null)} onClick={() => onSelect(zone)}>{localizedBodyZone(zone, t)}</button>)}</div>
   </section>;
 }

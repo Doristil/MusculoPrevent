@@ -15,11 +15,11 @@ export function recordExercise(exercise, session = {}) {
   window.dispatchEvent(new Event("musculoprevent-activity-updated"));
 }
 
-export function weeklySummary(activity = readActivity()) {
+export function weeklySummary(activity = readActivity(), locale = "fr-FR") {
   const now = new Date();
   const start = new Date(now); start.setHours(0, 0, 0, 0); start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
   const week = activity.filter(({ completedAt }) => new Date(completedAt) >= start);
   const days = new Set(week.map(({ completedAt }) => new Date(completedAt).toDateString()));
-  const weekDays = Array.from({ length: 7 }, (_, index) => { const day = new Date(start); day.setDate(start.getDate() + index); return { label: day.toLocaleDateString("fr-FR", { weekday: "short" }), active: days.has(day.toDateString()) }; });
+  const weekDays = Array.from({ length: 7 }, (_, index) => { const day = new Date(start); day.setDate(start.getDate() + index); return { label: day.toLocaleDateString(locale, { weekday: "short" }), active: days.has(day.toDateString()) }; });
   return { exercises: week.length, minutes: week.reduce((total, item) => total + item.minutes, 0), days: days.size, weekDays };
 }

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Anchor, Briefcase, Compass, Settings, Ship, Wrench, Zap } from "lucide-react";
 import { archiveProfile, clearProfile, emptyProfile, readProfile, readProfileArchive, removeArchivedProfile, saveProfile } from "../utils/profile";
 import { useTranslation } from "../i18n";
+import { localizedJob } from "../utils/localize";
 
 const jobIcons = {
   1: Briefcase,
@@ -88,7 +89,7 @@ function Job() {
                     <div className="profile-archive-selector"><span className="profile-archive-avatar" aria-hidden="true">{profileInitials}</span><select value={savedProfile.archiveId ?? ""} onChange={(event) => {
                         const profile = archive.find((item) => item.archiveId === event.target.value);
                         if (profile) loadArchivedProfile(profile); else resetProfile();
-                    }}><option value="">{t("newProfile")}</option>{archive.map((profile) => <option key={profile.archiveId} value={profile.archiveId}>{profile.firstName || t("unnamedProfile")} · {jobs.find((job) => job.id === profile.jobId)?.name}</option>)}</select>
+                    }}><option value="">{t("newProfile")}</option>{archive.map((profile) => <option key={profile.archiveId} value={profile.archiveId}>{profile.firstName || t("unnamedProfile")} · {localizedJob(jobs.find((job) => job.id === profile.jobId), t)}</option>)}</select>
                     {savedProfile.archiveId && <button className="profile-archive-delete" type="button" onClick={() => deleteArchivedProfile(savedProfile.archiveId)} aria-label={t("deleteProfile")}>×</button>}</div>
                 </section>}
 

@@ -1,23 +1,16 @@
 .card{
 
-background:var(--surface);
+background:#F3F5F9;
 
 border:1px solid var(--border);
 
-border-radius:22px;
+border-radius:24px;
 
 padding:28px;
 
-box-shadow:var(--shadow);
+box-shadow:none;
 
 transition:.25s;
 }
 
-.card:hover{
-
-transform:translateY(-4px);
-
-box-shadow:
-0 18px 40px rgba(15,23,42,.08);
-
-}
+.card:hover{transform:translateY(-2px);}
