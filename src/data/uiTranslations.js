@@ -67,7 +67,17 @@ export default {
     "sessionProfile_balancedHelp": "Planned sets · 20 sec rest",
     "sessionProfile_challenge": "Challenging",
     "sessionProfile_challengeHelp": "1 extra set · 10 sec rest",
-    "restTitle": "Take a {count}-second break"
+    "restTitle": "Take a {count}-second break",
+    "profileBackup": "Profile backup",
+    "profileBackupHelp": "Export your profiles and tracking data to restore them on another device.",
+    "exportBackup": "Export",
+    "importBackup": "Import",
+    "backupDownloaded": "Backup downloaded.",
+    "backupRestored": "Backup restored.",
+    "backupInvalid": "This backup file is not valid.",
+    "activityDetails": "Activity details",
+    "priorityArea": "Priority area",
+    "lastActivity": "Latest activity"
   },
   "es": {
     "exercisesTitle": "Ejercicios — {context}",

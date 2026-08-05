@@ -1,0 +1,12 @@
+{
+  "name": "MusculoPrevent",
+  "short_name": "MusculoPrevent",
+  "description": "Prévention des troubles musculo-squelettiques pour les métiers de la mer.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4A53FF",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

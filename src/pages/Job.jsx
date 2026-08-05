@@ -1,9 +1,9 @@
 import "./Job.css";
 import jobs from "../data/jobs";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Anchor, Briefcase, Compass, Settings, Ship, Wrench, Zap } from "lucide-react";
-import { archiveProfile, clearProfile, emptyProfile, readProfile, readProfileArchive, removeArchivedProfile, saveProfile } from "../utils/profile";
+import { archiveProfile, clearProfile, emptyProfile, exportLocalBackup, importLocalBackup, readProfile, readProfileArchive, removeArchivedProfile, saveProfile } from "../utils/profile";
 import { useTranslation } from "../i18n";
 import { localizedJob } from "../utils/localize";
 
@@ -32,6 +32,8 @@ function Job() {
     const [isAgeValidated, setIsAgeValidated] = useState(false);
     const [level, setLevel] = useState(savedProfile.level);
     const [archive, setArchive] = useState(readProfileArchive);
+    const [backupMessage, setBackupMessage] = useState("");
+    const backupInputRef = useRef(null);
     const { t, language } = useTranslation();
     const ageNumber = Number(age);
     const ageMessage = isAgeValidated && age !== "" && ageNumber < 16 ? t("tooYoung") : isAgeValidated && age !== "" && ageNumber > 90 ? t("tooOld") : "";
@@ -73,6 +75,27 @@ function Job() {
     };
     const activeArchivedProfile = archive.find((profile) => profile.archiveId === savedProfile.archiveId);
     const profileInitials = (activeArchivedProfile?.firstName || firstName || "?").trim().slice(0, 1).toUpperCase();
+    const downloadBackup = () => {
+        const blob = new Blob([exportLocalBackup()], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `musculoprevent-sauvegarde-${new Date().toISOString().slice(0, 10)}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+        setBackupMessage(t("backupDownloaded"));
+    };
+    const restoreBackup = async (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        const imported = importLocalBackup(await file.text());
+        if (imported) {
+            const nextProfile = readProfile();
+            setSavedProfile(nextProfile); setArchive(readProfileArchive()); setSelectedJob(nextProfile.jobId); setFirstName(nextProfile.firstName); setAge(nextProfile.age); setLevel(nextProfile.level);
+        }
+        setBackupMessage(imported ? t("backupRestored") : t("backupInvalid"));
+        event.target.value = "";
+    };
 
     return (
 
@@ -92,6 +115,12 @@ function Job() {
                     }}><option value="">{t("newProfile")}</option>{archive.map((profile) => <option key={profile.archiveId} value={profile.archiveId}>{profile.firstName || t("unnamedProfile")} · {localizedJob(jobs.find((job) => job.id === profile.jobId), t)}</option>)}</select>
                     {savedProfile.archiveId && <button className="profile-archive-delete" type="button" onClick={() => deleteArchivedProfile(savedProfile.archiveId)} aria-label={t("deleteProfile")}>×</button>}</div>
                 </section>}
+
+                <section className="profile-backup" aria-label={t("profileBackup")}>
+                    <div><strong>{t("profileBackup")}</strong><span>{t("profileBackupHelp")}</span></div>
+                    <div className="profile-backup-actions"><button type="button" onClick={downloadBackup}>{t("exportBackup")}</button><button type="button" onClick={() => backupInputRef.current?.click()}>{t("importBackup")}</button><input ref={backupInputRef} type="file" accept="application/json,.json" onChange={restoreBackup} /></div>
+                    {backupMessage && <small>{backupMessage}</small>}
+                </section>
 
                 <div className="profile-form">
                     <label className={`profile-field profile-field-full ${firstName.trim() ? "" : "profile-field-missing"}`}>

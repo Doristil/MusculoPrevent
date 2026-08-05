@@ -42,3 +42,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <LanguageProvider><AppErrorBoundary><BrowserRouter><App /></BrowserRouter></AppErrorBoundary></LanguageProvider>
   </React.StrictMode>
 );
+
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+}

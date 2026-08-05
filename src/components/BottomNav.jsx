@@ -15,7 +15,11 @@ export default function BottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
+  const isActive = (path) => {
+    if (path === "/body-zone") return location.pathname.startsWith("/body-zone") || location.pathname.startsWith("/exercises");
+    return location.pathname === path;
+  };
   return <nav className="bottom-nav" aria-label={t("menu")}>
-    {items.map(({ label, path, Icon }) => <button key={path} className={location.pathname === path ? "is-active" : ""} type="button" onClick={() => navigate(path)}><Icon size={21} /><span>{label === "library" ? t("libraryShort") : t(label)}</span></button>)}
+    {items.map(({ label, path, Icon }) => <button key={path} className={isActive(path) ? "is-active" : ""} type="button" aria-current={isActive(path) ? "page" : undefined} onClick={() => navigate(path)}><Icon size={21} strokeWidth={1.9} /><span>{label === "library" ? t("libraryShort") : t(label)}</span></button>)}
   </nav>;
 }

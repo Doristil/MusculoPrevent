@@ -21,5 +21,19 @@ export function weeklySummary(activity = readActivity(), locale = "fr-FR") {
   const week = activity.filter(({ completedAt }) => new Date(completedAt) >= start);
   const days = new Set(week.map(({ completedAt }) => new Date(completedAt).toDateString()));
   const weekDays = Array.from({ length: 7 }, (_, index) => { const day = new Date(start); day.setDate(start.getDate() + index); return { label: day.toLocaleDateString(locale, { weekday: "short" }), active: days.has(day.toDateString()) }; });
-  return { exercises: week.length, minutes: week.reduce((total, item) => total + item.minutes, 0), days: days.size, weekDays };
+  const zones = week.reduce((totals, item) => {
+    if (!item.zone) return totals;
+    totals[item.zone] = (totals[item.zone] ?? 0) + 1;
+    return totals;
+  }, {});
+  const topZone = Object.entries(zones).sort(([, first], [, second]) => second - first)[0] ?? null;
+  const latest = [...activity].sort((first, second) => new Date(second.completedAt) - new Date(first.completedAt))[0] ?? null;
+  return {
+    exercises: week.length,
+    minutes: week.reduce((total, item) => total + item.minutes, 0),
+    days: days.size,
+    weekDays,
+    topZone: topZone ? { id: topZone[0], count: topZone[1] } : null,
+    latest,
+  };
 }

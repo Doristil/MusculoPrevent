@@ -1,5 +1,6 @@
 const PROFILE_STORAGE_KEY = "musculoPrevent.profile";
 const PROFILE_ARCHIVE_STORAGE_KEY = "musculoPrevent.profileArchive";
+const ACTIVITY_STORAGE_KEY = "musculoprevent-activity";
 
 export const emptyProfile = {
   firstName: "",
@@ -63,4 +64,33 @@ export function removeArchivedProfile(archiveId) {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(PROFILE_ARCHIVE_STORAGE_KEY, JSON.stringify(readProfileArchive().filter((item) => item.archiveId !== archiveId)));
   window.dispatchEvent(new Event("musculoprevent-profile-updated"));
+}
+
+export function exportLocalBackup() {
+  if (typeof window === "undefined") return "";
+  return JSON.stringify({
+    format: "musculoprevent-backup",
+    version: 1,
+    createdAt: new Date().toISOString(),
+    profile: readProfile(),
+    profiles: readProfileArchive(),
+    activity: (() => { try { return JSON.parse(window.localStorage.getItem(ACTIVITY_STORAGE_KEY) ?? "[]"); } catch { return []; } })(),
+  }, null, 2);
+}
+
+export function importLocalBackup(content) {
+  if (typeof window === "undefined") return false;
+  try {
+    const backup = JSON.parse(content);
+    if (backup?.format !== "musculoprevent-backup" || !Array.isArray(backup.profiles) || !Array.isArray(backup.activity)) return false;
+    const nextProfile = { ...emptyProfile, ...(backup.profile ?? backup.profiles[0] ?? {}) };
+    window.localStorage.setItem(PROFILE_ARCHIVE_STORAGE_KEY, JSON.stringify(backup.profiles));
+    window.localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(nextProfile));
+    window.localStorage.setItem(ACTIVITY_STORAGE_KEY, JSON.stringify(backup.activity));
+    window.dispatchEvent(new Event("musculoprevent-profile-updated"));
+    window.dispatchEvent(new Event("musculoprevent-activity-updated"));
+    return true;
+  } catch {
+    return false;
+  }
 }
