@@ -16,7 +16,7 @@ import "./App.css";
 
 function App() {
   const location = useLocation();
-  const isExercisePlayer = location.pathname.startsWith("/exercise/");
+  const isExercisePlayer = location.pathname.startsWith("/exercise/") && !new URLSearchParams(location.search).has("preview") && !new URLSearchParams(location.search).has("intro");
 
   return (
     <div className="app">

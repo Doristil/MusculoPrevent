@@ -32,6 +32,8 @@ export default function ExerciseDetail() {
   const navigate = useNavigate();
   const { language, t } = useTranslation();
   const query = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const isPreview = query.get("preview") === "1";
+  const isSessionIntro = query.get("intro") === "1";
   const scope = query.get("scope") ?? "all";
   const value = query.get("value") ?? "all";
   const scopeData = useMemo(() => getExerciseScope(scope, value), [scope, value]);
@@ -83,9 +85,10 @@ export default function ExerciseDetail() {
   }, [id, holdSeconds]);
 
   useEffect(() => {
+    if (isPreview || isSessionIntro) return undefined;
     const timer = window.setInterval(() => setElapsedSeconds(Math.max(0, Math.floor((Date.now() - sessionStartedAt) / 1000))), 1000);
     return () => window.clearInterval(timer);
-  }, [sessionStartedAt]);
+  }, [isPreview, isSessionIntro, sessionStartedAt]);
 
   const goToExercise = useCallback((index) => {
     const nextExercise = scopedExercises[index];
@@ -130,7 +133,7 @@ export default function ExerciseDetail() {
   }, [currentIndex, exercise, exerciseSets, scopedExercises, series, sessionId, sessionStartedAt, scope, startRest, value]);
 
   useEffect(() => {
-    if (!isTimed || isPaused || isFinished || restSeconds !== null) return undefined;
+    if (isPreview || isSessionIntro || !isTimed || isPaused || isFinished || restSeconds !== null) return undefined;
 
     if (secondsLeft === 0) {
       const completionTimer = window.setTimeout(completeSeries, 500);
@@ -139,10 +142,10 @@ export default function ExerciseDetail() {
 
     const timer = window.setTimeout(() => setSecondsLeft((seconds) => seconds - 1), 1000);
     return () => window.clearTimeout(timer);
-  }, [completeSeries, isPaused, isTimed, isFinished, restSeconds, secondsLeft]);
+  }, [completeSeries, isPaused, isPreview, isSessionIntro, isTimed, isFinished, restSeconds, secondsLeft]);
 
   useEffect(() => {
-    if (restSeconds === null || isPaused || isFinished) return undefined;
+    if (isPreview || isSessionIntro || restSeconds === null || isPaused || isFinished) return undefined;
 
     if (restSeconds === 0) {
       const nextStepTimer = window.setTimeout(finishRest, 500);
@@ -152,10 +155,49 @@ export default function ExerciseDetail() {
 
     const timer = window.setTimeout(() => setRestSeconds((seconds) => seconds - 1), 1000);
     return () => window.clearTimeout(timer);
-  }, [finishRest, isFinished, isPaused, restSeconds]);
+  }, [finishRest, isFinished, isPaused, isPreview, isSessionIntro, restSeconds]);
 
   if (!exercise || currentIndex === -1) {
     return <main className="exercise-player exercise-player-message"><h1>{t("unknownExercise")}</h1><button onClick={() => navigate(returnTo, { replace: true })}>{t("back")}</button></main>;
+  }
+
+  if (isPreview || isSessionIntro) {
+    const localized = { ...exercise, ...translatedExercise };
+    const startUrl = exerciseHref(exercise.id, scope, value, sessionIds.length ? sessionIds : [exercise.id], sessionSettings);
+    const totalExercises = scopedExercises.length || 1;
+
+    return (
+      <section className="exercise-preview-page">
+        <div className="exercise-preview-heading">
+          <p className="exercise-preview-eyebrow">{isSessionIntro ? t("sessionReady") : t("exerciseDetails")}</p>
+          <span>{localizedExerciseZone(exercise.zone, t)} · {exercise.category === "Renforcement" ? t("strengthening") : t("stretching")}</span>
+          <h1>{localized.name}</h1>
+          {isSessionIntro && <p className="exercise-preview-intro">{t("sessionReadyHelp", { count: totalExercises })}</p>}
+        </div>
+
+        <section className="exercise-preview-card">
+          <div className="exercise-preview-zone" aria-hidden="true"><span>{localizedExerciseZone(exercise.zone, t)}</span></div>
+          <div className="exercise-preview-stats">
+            <span><b>{exerciseSets}</b>{t("sets")}</span>
+            <span><b>{exercise.reps}</b>{t("repetitions")}</span>
+            <span><b>{holdSeconds ? `${holdSeconds}s` : "—"}</b>{t("hold")}</span>
+          </div>
+          <div className="exercise-preview-tags">
+            <span>{localized.position}</span><span>{localized.equipment}</span><span>{localized.duration} min</span><span>{localized.difficulty}</span>
+          </div>
+          <div className="exercise-preview-copy">
+            <h2>{t("execution")}</h2><p>{localized.description}</p>
+            <h2>{t("targetMuscles")}</h2><p>{Array.isArray(localized.muscles) ? localized.muscles.join(" · ") : localized.muscles}</p>
+            <aside><strong>{t("maritimeBenefit")}</strong><p>{localized.interest}</p></aside>
+          </div>
+        </section>
+
+        <div className="exercise-preview-actions">
+          <button className="exercise-preview-back" type="button" onClick={() => navigate(returnTo)}>{t("backToList")}</button>
+          <button className="exercise-preview-start" type="button" onClick={() => navigate(startUrl)}>{isSessionIntro ? t("startSession") : t("startExercise")}</button>
+        </div>
+      </section>
+    );
   }
 
   if (isFinished) {

@@ -1,8 +1,8 @@
 import "./Job.css";
 import jobs from "../data/jobs";
 import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
-import { Anchor, Briefcase, Compass, Settings, Ship, Wrench, Zap } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Anchor, Briefcase, Compass, Languages, Moon, Settings, Ship, Sun, Wrench, Zap } from "lucide-react";
 import { archiveProfile, clearProfile, emptyProfile, exportLocalBackup, importLocalBackup, readProfile, readProfileArchive, removeArchivedProfile, saveProfile } from "../utils/profile";
 import { useTranslation } from "../i18n";
 import { localizedJob } from "../utils/localize";
@@ -34,10 +34,16 @@ function Job() {
     const [archive, setArchive] = useState(readProfileArchive);
     const [backupMessage, setBackupMessage] = useState("");
     const backupInputRef = useRef(null);
-    const { t, language } = useTranslation();
+    const { t, language, setLanguage } = useTranslation();
+    const [theme, setTheme] = useState(() => localStorage.getItem("musculoprevent-theme") ?? "light");
     const ageNumber = Number(age);
     const ageMessage = isAgeValidated && age !== "" && ageNumber < 16 ? t("tooYoung") : isAgeValidated && age !== "" && ageNumber > 90 ? t("tooOld") : "";
     const isProfileComplete = Boolean(firstName.trim() && level && selectedJob && age !== "" && ageNumber >= 16 && ageNumber <= 90);
+
+    useEffect(() => {
+        document.documentElement.dataset.theme = theme;
+        localStorage.setItem("musculoprevent-theme", theme);
+    }, [theme]);
 
     const continueToExercises = () => {
         if (selectedJob) {
@@ -119,6 +125,21 @@ function Job() {
                     <div><strong>{t("profileBackup")}</strong><span>{t("profileBackupHelp")}</span></div>
                     <div className="profile-backup-actions"><button type="button" onClick={downloadBackup}>{t("exportBackup")}</button><button type="button" onClick={() => backupInputRef.current?.click()}>{t("importBackup")}</button><input ref={backupInputRef} type="file" accept="application/json,.json" onChange={restoreBackup} /></div>
                     {backupMessage && <small>{backupMessage}</small>}
+                </section>
+
+                <section className="profile-preferences" aria-label={t("preferences")}>
+                    <div><strong>{t("preferences")}</strong><span>{t("preferencesHelp")}</span></div>
+                    <div className="profile-preference-controls">
+                        <div className="profile-theme-options" role="group" aria-label={t("appearance")}>
+                            <button className={theme === "light" ? "is-active" : ""} type="button" onClick={() => setTheme("light")} aria-pressed={theme === "light"}><Sun size={15} />{t("light")}</button>
+                            <button className={theme === "dark" ? "is-active" : ""} type="button" onClick={() => setTheme("dark")} aria-pressed={theme === "dark"}><Moon size={15} />{t("dark")}</button>
+                        </div>
+                        <div className="profile-language-options" role="group" aria-label={t("languageSwitcher")}>
+                            <Languages size={15} aria-hidden="true" />
+                            <button className={language === "fr" ? "is-active" : ""} type="button" onClick={() => setLanguage("fr")} aria-pressed={language === "fr"}>FR</button>
+                            <button className={language === "en" ? "is-active" : ""} type="button" onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
+                        </div>
+                    </div>
                 </section>
 
                 <div className="profile-form">

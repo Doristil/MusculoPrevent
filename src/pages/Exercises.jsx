@@ -8,6 +8,7 @@ import { getActiveProfile } from "../utils/profile";
 import jobs from "../data/jobs";
 import bodyZones from "../data/bodyZones";
 import { localizedBodyZone, localizedExerciseZone, localizedJob, localizedLevel } from "../utils/localize";
+import { Grid2X2, List } from "lucide-react";
 import "./Exercises.css";
 
 export default function Exercises() {
@@ -16,6 +17,8 @@ export default function Exercises() {
   const { language, t } = useTranslation();
   const [withoutEquipment, setWithoutEquipment] = useState(false);
   const [shortFormat, setShortFormat] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [displayMode, setDisplayMode] = useState("grid");
   const [profile, setProfile] = useState(getActiveProfile);
   const [customExerciseIds, setCustomExerciseIds] = useState([]);
   const [sessionProfile, setSessionProfile] = useState("balanced");
@@ -46,19 +49,20 @@ export default function Exercises() {
   const availableExercises = levelExercises.filter((exercise) => (
     !withoutEquipment || /^(Aucun|Élastique \(optionnel\))/i.test(exercise.equipment)
   ) && (!shortFormat || exercise.duration <= 4));
+  const displayedExercises = availableExercises.filter((exercise) => categoryFilter === "all" || exercise.category === categoryFilter);
   const sessionExercises = availableExercises.filter((exercise) => sessionZones.includes(exercise.zone));
   const zoneAnchor = (zone) => `zone-${zone.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").toLowerCase()}`;
   const sections = selectedZones.map((zone) => ({
     zone,
     categories: categories.map((category) => ({
       category,
-        exercises: availableExercises.filter(
+        exercises: displayedExercises.filter(
         (exercise) => exercise.zone === zone && exercise.category === category
       ),
     })).filter((group) => group.exercises.length > 0),
   })).filter((section) => section.categories.length > 0);
   const startTimedSession = (session) => {
-    if (session.exercises.length) navigate(exerciseHref(session.exercises[0].id, scope, value, session.exercises.map((exercise) => exercise.id), sessionSettings));
+    if (session.exercises.length) navigate(`${exerciseHref(session.exercises[0].id, scope, value, session.exercises.map((exercise) => exercise.id), sessionSettings)}&intro=1`);
   };
   const sessionDurations = [15, 20, 30];
   if (sessionZones.length >= 3) sessionDurations.push(45);
@@ -76,7 +80,7 @@ export default function Exercises() {
   const toggleCustomExercise = (exerciseId) => setCustomExerciseIds((current) => current.includes(exerciseId) ? current.filter((id) => id !== exerciseId) : [...current, exerciseId]);
   const customExercises = filteredExercises.filter((exercise) => customExerciseIds.includes(exercise.id));
   const startCustomSession = () => {
-    if (customExercises.length) navigate(exerciseHref(customExercises[0].id, scope, value, customExercises.map((exercise) => exercise.id), sessionSettings));
+    if (customExercises.length) navigate(`${exerciseHref(customExercises[0].id, scope, value, customExercises.map((exercise) => exercise.id), sessionSettings)}&intro=1`);
   };
 
   return (
@@ -88,13 +92,20 @@ export default function Exercises() {
       </h1>
 
       <p className="page-subtitle">
-        {t("exercisesAvailable", { count: availableExercises.length })}
+        {t("exercisesAvailable", { count: displayedExercises.length })}
       </p>
 
       <div className="exercise-filters exercise-filters-top" aria-label={t("filters")}>
         <span>{t("filters")}</span>
+        <button className={categoryFilter === "all" ? "is-active" : ""} type="button" onClick={() => setCategoryFilter("all")} aria-pressed={categoryFilter === "all"}>{t("allExercises")}</button>
+        <button className={categoryFilter === "Étirement" ? "is-active" : ""} type="button" onClick={() => setCategoryFilter("Étirement")} aria-pressed={categoryFilter === "Étirement"}>{t("stretching")}</button>
+        <button className={categoryFilter === "Renforcement" ? "is-active" : ""} type="button" onClick={() => setCategoryFilter("Renforcement")} aria-pressed={categoryFilter === "Renforcement"}>{t("strengthening")}</button>
         <button className={withoutEquipment ? "is-active" : ""} type="button" onClick={() => setWithoutEquipment((active) => !active)} aria-pressed={withoutEquipment}>{t("noEquipment")}</button>
         <button className={shortFormat ? "is-active" : ""} type="button" onClick={() => setShortFormat((active) => !active)} aria-pressed={shortFormat}>{t("shortFormat")} · ≤ 4 min</button>
+        <div className="exercise-view-toggle" role="group" aria-label={t("exerciseView") }>
+          <button className={displayMode === "grid" ? "is-active" : ""} type="button" onClick={() => setDisplayMode("grid")} aria-label={t("cardView")} aria-pressed={displayMode === "grid"}><Grid2X2 size={16} /></button>
+          <button className={displayMode === "list" ? "is-active" : ""} type="button" onClick={() => setDisplayMode("list")} aria-label={t("listView")} aria-pressed={displayMode === "list"}><List size={17} /></button>
+        </div>
       </div>
 
       <section className="session-complexity" aria-label={t("sessionComplexity")}>
@@ -181,7 +192,7 @@ export default function Exercises() {
             <div className="exercise-category" key={group.category}>
               <h3 className="exercise-category-title">{group.category === "Renforcement" ? t("strengthening") : t("stretching")}</h3>
 
-              <div className="exercise-grid">
+              <div className={`exercise-grid ${displayMode === "list" ? "is-list" : ""}`}>
                 {group.exercises.map((exercise) => (
                   (() => {
                     const translated = catalogTranslations[language]?.[exercise.id] ?? {};
@@ -190,7 +201,15 @@ export default function Exercises() {
                   <article
                     key={exercise.id}
                     className={`exercise-card ${customExerciseIds.includes(exercise.id) ? "is-selected" : ""}`}
-                    onClick={() => navigate(exerciseHref(exercise.id, scope, value, [exercise.id]))}
+                    role="link"
+                    tabIndex={0}
+                    onClick={() => navigate(`${exerciseHref(exercise.id, scope, value, [exercise.id])}&preview=1`)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        navigate(`${exerciseHref(exercise.id, scope, value, [exercise.id])}&preview=1`);
+                      }
+                    }}
                   >
                     <div className="exercise-image-placeholder" aria-hidden="true">{localizedExerciseZone(exercise.zone, t)}</div>
 
@@ -206,6 +225,7 @@ export default function Exercises() {
                       <button className="exercise-select-button" type="button" aria-pressed={customExerciseIds.includes(exercise.id)} onClick={(event) => { event.stopPropagation(); toggleCustomExercise(exercise.id); }}>
                         {customExerciseIds.includes(exercise.id) ? t("removeExercise") : t("selectExercise")}
                       </button>
+                      <button className="exercise-details-button" type="button" onClick={(event) => { event.stopPropagation(); navigate(`${exerciseHref(exercise.id, scope, value, [exercise.id])}&preview=1`); }}>{t("viewExerciseDetails")}</button>
                     </div>
                   </article>
                     );
