@@ -1,3 +1,32 @@
+.session-option-more{display:none}
+
+@media(max-width:768px){
+  .session-picker-actions{display:flex!important;gap:12px!important;overflow-x:auto!important;margin-right:calc(50% - 50vw);margin-left:calc(50% - 50vw);padding:2px max(18px, env(safe-area-inset-left)) 12px;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .session-picker-actions::-webkit-scrollbar{display:none}
+  .session-option{flex:0 0 min(82vw,340px);min-height:0!important;padding:18px!important;border-radius:20px!important;scroll-snap-align:start}
+  .session-option h2{margin-top:13px!important;font-size:26px!important}
+  .session-option ul{margin:14px 0!important;min-height:0!important}
+  .session-option li{padding:8px 0!important}
+  .session-option li strong{font-size:12px!important}
+  .session-option li span{font-size:11px!important}
+  .session-option-more{display:block!important;color:var(--text-secondary);font-size:11px;font-weight:800}
+  .session-option button{padding:11px 14px!important}
+  .exercise-grid{gap:10px!important}
+  .exercise-grid.is-list .exercise-card{display:block!important;border-radius:18px!important}
+  .exercise-grid.is-list .exercise-content{padding:13px 14px!important}
+  .exercise-grid.is-list .exercise-content h4{margin:7px 0 0!important;font-size:16px!important;line-height:1.25}
+  .exercise-grid.is-list .exercise-content p,.exercise-grid.is-list .exercise-footer{display:none!important}
+  .exercise-grid.is-list .badge{font-size:9px;padding:5px 8px}
+  .exercise-grid.is-list .exercise-select-button,.exercise-grid.is-list .exercise-details-button{display:inline-flex!important;width:auto!important;min-height:34px;margin:10px 6px 0 0!important;padding:7px 11px!important;font-size:10px!important;justify-content:center}
+  .exercise-grid.is-list .exercise-details-button{margin-right:0!important}
+  .exercise-grid:not(.is-list) .exercise-image-placeholder{height:112px!important}
+  .exercise-grid:not(.is-list) .exercise-content{padding:16px!important}
+  .exercise-grid:not(.is-list) .exercise-content h4{margin:11px 0 8px!important;font-size:18px!important}
+  .exercise-grid:not(.is-list) .exercise-content p{font-size:13px!important;line-height:1.45}
+  .exercise-grid:not(.is-list) .exercise-footer{margin-top:14px!important;padding-top:12px!important;font-size:11px!important}
+  .exercise-grid:not(.is-list) .exercise-footer span{padding:6px 9px!important}
+}
+
 .exercises-page{
 
     animation:fade .4s ease;

@@ -153,16 +153,17 @@ export default function Exercises() {
             <button className="session-zone-reset" type="button" onClick={() => setSessionZones(selectedZones)}>{t("allZones")}</button>
           </div>
         </div>
-        <div className="session-picker-actions">{sessionOptions.map(({ minutes, session }) => (
-          <article className="session-option" key={minutes}>
+        <div className="session-picker-actions" role="list">{sessionOptions.map(({ minutes, session }) => (
+          <article className="session-option" key={minutes} role="listitem">
             <div className="session-option-top"><p>{t("generatedForYou")}</p><span>{minutes} min</span></div>
             <h2>{session.exercises.length} {t("exercises")}</h2>
             <span className="session-option-duration">≈ {session.estimatedMinutes} min</span>
             <ul>
-              {session.exercises.map((exercise) => {
+              {session.exercises.slice(0, 3).map((exercise) => {
                 const localizedExercise = { ...exercise, ...(catalogTranslations[language]?.[exercise.id] ?? {}) };
                 return <li key={exercise.id}><strong>{localizedExercise.name}</strong><span>{localizedExerciseZone(exercise.zone, t)}</span></li>;
               })}
+              {session.exercises.length > 3 && <li className="session-option-more">+ {session.exercises.length - 3}</li>}
             </ul>
             <button type="button" disabled={!session.exercises.length} onClick={() => startTimedSession(session)}>{t("start")}</button>
           </article>
