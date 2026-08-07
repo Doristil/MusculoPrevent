@@ -200,7 +200,6 @@ export default function ExerciseDetail() {
               {photoSources.map((source, index) => (
                 <figure className="exercise-preview-photo" key={source}>
                   <img src={source} alt={`${localized.name} — ${index + 1}`} loading={index === 0 ? "eager" : "lazy"} />
-                  {photoSources.length > 1 && <figcaption>{index + 1} / {photoSources.length}</figcaption>}
                 </figure>
               ))}
             </div>
