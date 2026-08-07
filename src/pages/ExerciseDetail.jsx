@@ -71,6 +71,7 @@ export default function ExerciseDetail() {
   const [restSeconds, setRestSeconds] = useState(null);
   const [pendingStep, setPendingStep] = useState(null);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [photoTouchStartX, setPhotoTouchStartX] = useState(null);
   const [isProgressOpen, setIsProgressOpen] = useState(false);
   const [sessionStartedAt] = useState(() => {
     const now = Date.now();
@@ -260,6 +261,17 @@ export default function ExerciseDetail() {
   const completedReps = completedRepsBefore + (getRepCount(exercise.reps) * completedCurrentSets);
   const completedExercises = Math.min(scopedExercises.length, currentIndex + (isResting && pendingStep === "next-exercise" ? 1 : 0));
   const playerPhotoSources = getExercisePhotoSources(exercise.id);
+  const movePhoto = (direction) => {
+    if (playerPhotoSources.length < 2) return;
+    setActivePhotoIndex((current) => (current + direction + playerPhotoSources.length) % playerPhotoSources.length);
+  };
+  const handlePhotoTouchEnd = (event) => {
+    const endX = event.changedTouches[0]?.clientX;
+    if (photoTouchStartX === null || endX === undefined) return;
+    const deltaX = endX - photoTouchStartX;
+    if (Math.abs(deltaX) > 36) movePhoto(deltaX < 0 ? 1 : -1);
+    setPhotoTouchStartX(null);
+  };
 
   return (
     <main className="exercise-player">
@@ -311,7 +323,11 @@ export default function ExerciseDetail() {
 
           {!isResting && playerPhotoSources.length > 0 && (
             <aside className="player-photo-panel" aria-label="Photos d'exécution">
-              <div className="player-photo-main">
+              <div
+                className={`player-photo-main ${playerPhotoSources.length > 1 ? "is-swipeable" : ""}`}
+                onTouchStart={(event) => setPhotoTouchStartX(event.touches[0]?.clientX ?? null)}
+                onTouchEnd={handlePhotoTouchEnd}
+              >
                 <img src={playerPhotoSources[activePhotoIndex]} alt={`${translatedExercise.name ?? exercise.name} — ${activePhotoIndex + 1}`} />
               </div>
               {playerPhotoSources.length > 1 && (
