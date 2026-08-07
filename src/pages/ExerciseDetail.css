@@ -82,3 +82,15 @@
   .exercise-player .player-photo-main{min-height:128px;max-height:150px}
   .exercise-player .player-photo-main img{max-height:150px}
 }
+
+/* La consigne longue ne déborde plus du lecteur : elle s'ouvre dans un panneau
+   lisible, sans déplacer le minuteur ni les commandes. */
+.player-instruction-summary{margin:6px auto 12px;text-align:center}.player-instruction-summary .player-instruction{margin:0 auto}.player-instruction-more{margin-top:6px;background:transparent;color:var(--primary);font-size:12px;font-weight:800}.player-instruction-dialog{position:fixed;z-index:40;inset:0;display:grid;align-items:end}.player-instruction-backdrop{position:absolute;inset:0;width:100%;background:rgba(9,14,24,.32);backdrop-filter:blur(3px)}.player-instruction-sheet{position:relative;z-index:1;max-height:min(66svh,560px);overflow:auto;padding:24px max(22px,calc((100vw - 680px)/2));border-radius:26px 26px 0 0;background:var(--surface);box-shadow:0 -12px 36px rgba(15,23,42,.16)}.player-instruction-sheet-header{display:flex;align-items:center;justify-content:space-between;gap:14px}.player-instruction-sheet-header p{margin:0;color:var(--text-secondary);font-size:11px;font-weight:850;letter-spacing:.11em;text-transform:uppercase}.player-instruction-sheet-header button{padding:8px 12px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text);font-size:12px;font-weight:800}.player-instruction-sheet h2{margin:16px 0 10px;color:var(--text);font-size:clamp(1.35rem,5vw,2rem);line-height:1.1}.player-instruction-sheet>p{margin:0;color:var(--text);font-size:16px;line-height:1.6}
+@media(max-width:760px){
+  .exercise-player .player-home{width:42px;min-height:38px;padding:0;font-size:0}
+  .exercise-player .player-home::after{content:"⌂";font-size:21px;line-height:1}
+  .exercise-player .player-instruction{font-size:12px;-webkit-line-clamp:2}
+  .exercise-player .player-instruction-more{margin-top:4px;font-size:11px}
+  .player-instruction-sheet{max-height:68svh;padding:21px 20px calc(22px + env(safe-area-inset-bottom))}
+  .player-instruction-sheet>p{font-size:15px;line-height:1.55}
+}

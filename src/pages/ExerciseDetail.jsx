@@ -72,6 +72,7 @@ export default function ExerciseDetail() {
   const [pendingStep, setPendingStep] = useState(null);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [photoTouchStartX, setPhotoTouchStartX] = useState(null);
+  const [isInstructionOpen, setIsInstructionOpen] = useState(false);
   const [isProgressOpen, setIsProgressOpen] = useState(false);
   const [sessionStartedAt] = useState(() => {
     const now = Date.now();
@@ -99,6 +100,7 @@ export default function ExerciseDetail() {
     setRestSeconds(null);
     setPendingStep(null);
     setActivePhotoIndex(0);
+    setIsInstructionOpen(false);
   }, [id, holdSeconds]);
 
   useEffect(() => {
@@ -343,7 +345,10 @@ export default function ExerciseDetail() {
           )}
         </div>
 
-        <p className="player-instruction">{isResting ? t("nextStarts") : translatedExercise.description ?? exercise.description}</p>
+        <div className="player-instruction-summary">
+          <p className="player-instruction">{isResting ? t("nextStarts") : translatedExercise.description ?? exercise.description}</p>
+          {!isResting && <button className="player-instruction-more" type="button" onClick={() => setIsInstructionOpen(true)}>{t("readFullInstruction")}</button>}
+        </div>
 
         <div className="player-actions">
           {(isTimed || isResting) && <button className="player-secondary-button" onClick={() => setIsPaused((paused) => !paused)}>{isPaused ? t("resume") : t("pause")}</button>}
@@ -356,6 +361,16 @@ export default function ExerciseDetail() {
           <button onClick={() => goToExercise(currentIndex + 1)}>{t("skipExercise")}</button>
         </div>}
       </section>
+      {isInstructionOpen && !isResting && (
+        <div className="player-instruction-dialog" role="dialog" aria-modal="true" aria-label={t("execution")}>
+          <button className="player-instruction-backdrop" type="button" aria-label={t("closeInstruction")} onClick={() => setIsInstructionOpen(false)} />
+          <section className="player-instruction-sheet">
+            <div className="player-instruction-sheet-header"><p>{t("execution")}</p><button type="button" onClick={() => setIsInstructionOpen(false)}>{t("closeInstruction")}</button></div>
+            <h2>{translatedExercise.name ?? exercise.name}</h2>
+            <p>{translatedExercise.description ?? exercise.description}</p>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
