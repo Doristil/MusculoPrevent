@@ -18,7 +18,6 @@ export default {
     "closeExercise": "Close the exercise",
     "mainMenu": "Main Menu",
     "recovery": "Recovery",
-    "restTitle": "Take a 20-second break",
     "series": "series {current} of {total}",
     "seconds": "out of {count} s",
     "repetitions": "repetitions",

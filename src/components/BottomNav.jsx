@@ -1,6 +1,6 @@
 import { BarChart3, Crosshair, House, ShieldAlert, UserRound } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 import "./BottomNav.css";
 
 const items = [

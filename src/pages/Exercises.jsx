@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { exerciseHref, getExerciseScope } from "../utils/exerciseScope";
 import catalogTranslations from "../data/catalogTranslations";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 import { buildTimedSession, exercisesForLevel } from "../utils/sessionBuilder";
 import { getActiveProfile } from "../utils/profile";
 import jobs from "../data/jobs";
@@ -26,6 +26,7 @@ export default function Exercises() {
   const scope = jobId ? "job" : zonesSlug ? "zones" : "zone";
   const value = jobId ?? zonesSlug ?? zoneSlug;
   const { selectedZones, exercises: filteredExercises } = getExerciseScope(scope, value);
+  const selectedZonesKey = selectedZones.join("|");
   const context = jobId
     ? `${t("job")}: ${localizedJob(jobs.find((job) => String(job.id) === String(jobId)), t)}`
     : zonesSlug
@@ -44,7 +45,9 @@ export default function Exercises() {
     window.addEventListener("musculoprevent-profile-updated", updateProfile);
     return () => window.removeEventListener("musculoprevent-profile-updated", updateProfile);
   }, []);
-  useEffect(() => setSessionZones(selectedZones), [value]);
+  useEffect(() => {
+    setSessionZones(selectedZonesKey ? selectedZonesKey.split("|") : []);
+  }, [selectedZonesKey]);
   const levelExercises = exercisesForLevel(filteredExercises, profile.level);
   const availableExercises = levelExercises.filter((exercise) => (
     !withoutEquipment || /^(Aucun|Élastique \(optionnel\))/i.test(exercise.equipment)

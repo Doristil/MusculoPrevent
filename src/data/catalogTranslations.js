@@ -149,100 +149,108 @@ export default {
       "subgroup": "Triceps / Chest Muscles"
     },
     "EP001": {
-      "name": "Deltoid Stretch",
-      "description": "Bring one arm out straight in front of your chest and gently pull on it with your other arm.",
+      "name": "Levator Scapulae, Rhomboid and Middle Trapezius Stretch",
+      "description": "Lie on your back with one knee bent and your hands raised toward the ceiling. Push your hands upward to broaden your upper back, as if the movement starts from your elbows. Exhale and hold for 8 to 10 seconds. Repeat 5 to 6 times.",
       "objective": "Mobility",
-      "interest": "Improves shoulder mobility and reduces tension caused by repetitive handling movements.",
+      "interest": "Carrying loads uses the middle trapezius and rhomboids, which are essential for shoulder-blade stability. This stretch releases upper-back tension, supports scapular stability, and helps prevent neck pain linked to lifting or overhead work.",
       "muscles": [
-        "Anterior deltoid",
-        "Medial deltoid",
-        "Posterior deltoid"
-      ],
-      "equipment": "None",
-      "difficulty": "Easy",
-      "position": "Standing",
-      "subgroup": "Deltoid"
-    },
-    "EP002": {
-      "name": "Rotator Cuff Stretch",
-      "description": "Gently rotate your arm inward using your other hand.",
-      "objective": "Mobility",
-      "interest": "Maintains shoulder mobility and reduces the risk of injury during work at heights.",
-      "muscles": [
-        "Subscapularis",
-        "Small circle"
-      ],
-      "equipment": "None",
-      "difficulty": "Easy",
-      "position": "Standing",
-      "subgroup": "Rotator cuff"
-    },
-    "EP003": {
-      "name": "Side Elevations",
-      "description": "Raise your arms out to the sides until they are horizontal, then lower them slowly.",
-      "objective": "Force",
-      "interest": "Strengthens the shoulders and improves stability when carrying loads.",
-      "muscles": [
-        "Medial deltoid"
-      ],
-      "equipment": "Dumbbells or bottles",
-      "difficulty": "Average",
-      "position": "Standing",
-      "subgroup": "Medial deltoid"
-    },
-    "EP004": {
-      "name": "External Rotation with a Rubber Band",
-      "description": "Keep your elbow close to your body and perform a controlled external rotation against resistance.",
-      "objective": "Stability",
-      "interest": "Strengthens the shoulder's stabilizing muscles and helps prevent musculoskeletal disorders.",
-      "muscles": [
-        "Subspinous",
-        "Small circle"
-      ],
-      "equipment": "Elastic",
-      "difficulty": "Easy",
-      "position": "Standing",
-      "subgroup": "Rotator cuff"
-    },
-    "EP005": {
-      "name": "Shoulder Press",
-      "description": "Push the dumbbells overhead, then lower them slowly.",
-      "objective": "Force",
-      "interest": "Improves the ability to lift above shoulder height.",
-      "muscles": [
-        "Anterior deltoid",
-        "Brachial triceps"
-      ],
-      "equipment": "Dumbbells",
-      "difficulty": "Average",
-      "position": "Standing",
-      "subgroup": "Anterior deltoid"
-    },
-    "EP006": {
-      "name": "Front Elevations",
-      "description": "Raise your arms in front of you until they are horizontal, then lower them in a controlled manner.",
-      "objective": "Endurance",
-      "interest": "Improves shoulder muscle endurance during repetitive movements.",
-      "muscles": [
-        "Anterior deltoid"
-      ],
-      "equipment": "Dumbbells",
-      "difficulty": "Average",
-      "position": "Standing",
-      "subgroup": "Anterior deltoid"
-    },
-    "EP007": {
-      "name": "Scapular pumps",
-      "description": "In the push-up position, move only your shoulder blades without bending your elbows.",
-      "objective": "Stability",
-      "interest": "Promotes better scapular stability and reduces shoulder pain.",
-      "muscles": [
-        "Anterior serrated tooth"
+        "Levator scapulae",
+        "Rhomboids",
+        "Middle trapezius fibres"
       ],
       "equipment": "None",
       "difficulty": "Easy",
       "position": "On the ground",
-      "subgroup": "Scapula"
+      "subgroup": "Rhomboids and middle trapezius"
+    },
+    "EP002": {
+      "name": "Anterior Shoulder Muscle Stretch",
+      "description": "Rock your knees from side to side, then slide your pelvis to increase the distance between your hands and buttocks. Keep your neck aligned with your spine and your shoulders low.",
+      "objective": "Mobility",
+      "interest": "Opens the chest, reduces rounded shoulders and improves postural control after handling loads, ropes or tools.",
+      "muscles": [
+        "Anterior deltoid",
+        "Pectoralis major",
+        "Biceps brachii"
+      ],
+      "equipment": "None",
+      "difficulty": "Easy",
+      "position": "On the ground",
+      "subgroup": "Anterior shoulder muscles"
+    },
+    "EP003": {
+      "name": "Alternating Anterior and Middle Deltoid Stretches",
+      "description": "Hold your wrists and pull them alternately to the right and left. Perform ten controlled movements.",
+      "objective": "Mobility",
+      "interest": "Improves shoulder flexibility and reduces deltoid tension caused by lifting, pulling and holding loads at shoulder height.",
+      "muscles": [
+        "Anterior deltoid",
+        "Middle deltoid"
+      ],
+      "equipment": "None",
+      "difficulty": "Easy",
+      "position": "Standing",
+      "subgroup": "Anterior and middle deltoids"
+    },
+    "EP004": {
+      "name": "Levator Scapulae, Rhomboid and Middle Trapezius Contraction",
+      "description": "Lie on your back with your arms extended at right angles to your torso. Press your shoulders into the floor for about six seconds while exhaling. Repeat five to six times.",
+      "objective": "Mobility",
+      "interest": "Strengthens shoulder-blade stabilisers, improves upper-back posture and helps reduce back discomfort associated with handling loads.",
+      "muscles": [
+        "Levator scapulae",
+        "Rhomboids",
+        "Middle trapezius fibres"
+      ],
+      "equipment": "None",
+      "difficulty": "Easy",
+      "position": "On the ground",
+      "subgroup": "Rhomboids and middle trapezius"
+    },
+    "EP005": {
+      "name": "Isometric Anterior Shoulder Muscle Contraction",
+      "description": "With your hands fixed on the floor, press statically to draw your hands toward your buttocks. Exhale and hold for about six seconds.",
+      "objective": "Mobility",
+      "interest": "Builds the muscles used to reach overhead, push and handle tools, while improving front shoulder stability.",
+      "muscles": [
+        "Anterior deltoid",
+        "Pectoralis major",
+        "Coracobrachialis"
+      ],
+      "equipment": "None",
+      "difficulty": "Easy",
+      "position": "On the ground",
+      "subgroup": "Anterior shoulder muscles"
+    },
+    "EP006": {
+      "name": "Anterior and Posterior Shoulder Muscle Strengthening",
+      "description": "With your hands clasped, push your elbows backward as you exhale. As you inhale, make a small up-and-down movement. Repeat on each side; use a towel or belt if needed.",
+      "objective": "Force",
+      "interest": "Strengthens the front and back shoulder chains used for pulling and pushing equipment, helping prevent postural imbalances.",
+      "muscles": [
+        "Anterior deltoid",
+        "Posterior deltoid",
+        "Trapezius",
+        "Rhomboids"
+      ],
+      "equipment": "Towel or belt (optional)",
+      "difficulty": "Easy",
+      "position": "Standing",
+      "subgroup": "Anterior and posterior shoulder muscles"
+    },
+    "EP007": {
+      "name": "Shoulder-blade Adductor Muscle Contraction",
+      "description": "Stabilise one shoulder with one hand, then press it backward. Hold for three to four seconds while inhaling. Repeat five to six times on each side.",
+      "objective": "Force",
+      "interest": "Promotes shoulder-blade stability and postural control during handling tasks and arms-extended effort.",
+      "muscles": [
+        "Rhomboids",
+        "Middle trapezius"
+      ],
+      "equipment": "None",
+      "difficulty": "Easy",
+      "position": "Standing",
+      "subgroup": "Shoulder-blade adductors"
     },
     "TR001": {
       "name": "Stretching the Deltoid, Trapezius, and Neck",

@@ -1,7 +1,7 @@
 import "./SearchMode.css";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, BriefcaseBusiness, Crosshair } from "lucide-react";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 
 function SearchMode() {
 

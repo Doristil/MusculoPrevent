@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 import "./Home.css";
 
 function Home() {

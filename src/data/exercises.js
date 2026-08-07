@@ -1,3 +1,8 @@
+// Référentiel unique : le mémoire Word validé pour la présentation.
+// Le fichier CSV est uniquement conservé comme archive et ne doit jamais servir
+// à créer, corriger ou compléter le catalogue affiché.
+import referenceOverrides, { additionalReferenceExercises } from "./referenceOverrides";
+
 const exercises = [
 
 {
@@ -257,26 +262,26 @@ const exercises = [
   photo: "BR005.jpg"
 },{
   id: "EP001",
-  zone: "Épaules",
-  subgroup: "Deltoïde",
+  zone: "Trapèzes",
+  subgroup: "Rhomboïdes et trapèze moyen",
   category: "Étirement",
-  name: "Étirement des deltoïdes",
+  name: "Étirement des angulaires, rhomboïdes et trapèzes moyens",
   muscles: [
-    "Deltoïde antérieur",
-    "Deltoïde moyen",
-    "Deltoïde postérieur"
+    "Angulaire de la scapula",
+    "Rhomboïdes",
+    "Faisceaux moyens du trapèze"
   ],
   objective: "Mobilité",
   level: "Débutant",
   sets: 1,
-  reps: "3-5",
-  hold: 20,
+  reps: "5-6",
+  hold: 8,
   equipment: "Aucun",
   difficulty: "Facile",
-  position: "Debout",
+  position: "Au sol",
   duration: 3,
-  description: "Amener un bras tendu devant la poitrine et exercer une légère traction avec l'autre bras.",
-  interest: "Améliore la mobilité de l'épaule et diminue les tensions liées aux mouvements répétitifs de manutention.",
+  description: "Allongé sur le dos, un genou plié et les mains levées vers le plafond, poussez les mains vers le haut en cherchant à élargir le dos, comme si le mouvement partait des coudes. Expirez et maintenez 8 à 10 secondes. Répétez 5 à 6 fois.",
+  interest: "Le port de charges sollicite les trapèzes moyens et les rhomboïdes, essentiels à la stabilisation des omoplates. Cet étirement détend le haut du dos, favorise la stabilité scapulaire et aide à prévenir les douleurs cervicales liées au levage de charges ou au travail en hauteur.",
   photo: "EP001.jpg"
 },
 
@@ -912,27 +917,6 @@ const exercises = [
 },
 
 {
-  id: "AB007",
-  zone: "Ceinture abdominale",
-  subgroup: "Obliques",
-  category: "Renforcement",
-  name: "Flexions latérales alternées",
-  muscles: [
-    "Obliques"
-  ],
-  objective: "Endurance",
-  level: "Débutant",
-  sets: 4,
-  reps: "6-8",
-  hold: null,
-  equipment: "Aucun",
-  difficulty: "Facile",
-  position: "Allongé",
-  duration: 5,
-  description: "Buste relevé, toucher alternativement le pied droit puis le pied gauche avec la main correspondante.",
-  interest: "Renforce les obliques, améliore la stabilité du tronc et limite les contraintes lombaires lors des efforts asymétriques.",
-  photo: "AB007.jpg"
-},{
   id: "FE001",
   zone: "Fessiers",
   subgroup: "Grand fessier",
@@ -1348,4 +1332,18 @@ const exercises = [
 
 ];
 
-export default exercises;
+// AB004 n'apparaît pas dans le référentiel validé. Il est retiré sans renommer
+// les autres identifiants, pour ne pas casser l'association des photos en cours.
+const canonicalExercises = exercises
+  .filter((exercise) => exercise.id !== "AB004")
+  .map((exercise) => ({ ...exercise, ...(referenceOverrides[exercise.id] ?? {}) }));
+
+// DO007 et DO008 font partie du bloc « Dos » dans le document de référence.
+// Les insérer ici conserve cet ordre pour les séances, les filtres et les photos.
+const afterDos = canonicalExercises.findIndex((exercise) => exercise.id === "DO006") + 1;
+
+export default [
+  ...canonicalExercises.slice(0, afterDos),
+  ...additionalReferenceExercises,
+  ...canonicalExercises.slice(afterDos),
+];

@@ -2,7 +2,7 @@ import { useState } from "react";
 import exercises from "../data/exercises";
 import { matchesBodyZone } from "../utils/exerciseScope";
 import { localizedBodyZone } from "../utils/localize";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 import "./BodyMap.css";
 
 // Les tracés suivent directement le dessin du corps : ils restent donc parfaitement alignés

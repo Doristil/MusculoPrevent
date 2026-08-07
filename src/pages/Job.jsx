@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { Anchor, Briefcase, Compass, Languages, Moon, Settings, Ship, Sun, Wrench, Zap } from "lucide-react";
 import { archiveProfile, clearProfile, emptyProfile, exportLocalBackup, importLocalBackup, readProfile, readProfileArchive, removeArchivedProfile, saveProfile } from "../utils/profile";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 import { localizedJob } from "../utils/localize";
 
 const jobIcons = {

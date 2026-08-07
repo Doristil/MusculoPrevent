@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { readActivity, weeklySummary } from "../utils/activity";
 import { getActiveProfile, readProfileArchive, saveProfile } from "../utils/profile";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 import "./Progress.css";
 
 export default function Progress() {

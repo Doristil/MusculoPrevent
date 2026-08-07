@@ -1,6 +1,6 @@
 import { ArrowRight, Boxes, Hand, ShieldAlert, Waves, Wrench } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 import "./Pain.css";
 
 const concerns = [

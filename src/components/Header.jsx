@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 import jobs from "../data/jobs";
 import { localizedJob } from "../utils/localize";
 import { getActiveProfile } from "../utils/profile";
@@ -26,13 +26,13 @@ export default function Header() {
           <span>MusculoPrevent</span>
         </button>
 
-        <div className="header-person" aria-label={t("profile")}>
+        <button className="header-person" type="button" onClick={() => navigate("/job")} aria-label={t("profile")}>
           <span className="header-person-initial" aria-hidden="true">{(profile.firstName || "?").trim().charAt(0).toUpperCase()}</span>
           <span className="header-person-copy">
             <strong>{profile.firstName || t("profile")}</strong>
             {job && <small>{localizedJob(job, t)}</small>}
           </span>
-        </div>
+        </button>
       </div>
     </header>
   );

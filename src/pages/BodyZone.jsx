@@ -3,7 +3,7 @@ import { useState } from "react";
 import bodyZones from "../data/bodyZones";
 import { useNavigate } from "react-router-dom";
 import BodyMap from "../components/BodyMap";
-import { useTranslation } from "../i18n";
+import { useTranslation } from "../context/LanguageContext";
 
 function BodyZone() {
   const navigate = useNavigate();
