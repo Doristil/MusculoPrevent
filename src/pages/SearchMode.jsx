@@ -27,7 +27,6 @@ function SearchMode() {
 
                         <BriefcaseBusiness className="choice-icon" strokeWidth={1.7} />
 
-                        <span className="choice-kicker">{t("byJob")}</span>
                         <h2>{t("byJobTitle")}</h2>
 
                         <p>
@@ -45,7 +44,6 @@ function SearchMode() {
 
                         <Crosshair className="choice-icon" strokeWidth={1.7} />
 
-                        <span className="choice-kicker">{t("byZone")}</span>
                         <h2>{t("byZoneTitle")}</h2>
 
                         <p>
