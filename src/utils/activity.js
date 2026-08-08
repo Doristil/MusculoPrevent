@@ -33,6 +33,7 @@ export function weeklySummary(activity = readActivity(), locale = "fr-FR") {
     minutes: week.reduce((total, item) => total + item.minutes, 0),
     days: days.size,
     weekDays,
+    zoneCounts: zones,
     topZone: topZone ? { id: topZone[0], count: topZone[1] } : null,
     latest,
   };
