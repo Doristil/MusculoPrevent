@@ -8,6 +8,7 @@ import SearchMode from "./pages/SearchMode";
 import Job from "./pages/Job";
 import BodyZone from "./pages/BodyZone";
 import Exercises from "./pages/Exercises";
+import SessionChoice from "./pages/SessionChoice";
 import ExerciseDetail from "./pages/ExerciseDetail";
 import Pain from "./pages/Pain";
 import Progress from "./pages/Progress";
@@ -48,6 +49,7 @@ function App() {
           />
           <Route path="/pain" element={<Pain />} />
           <Route path="/progress" element={<Progress />} />
+          <Route path="/selection/:scope/:value" element={<SessionChoice />} />
 
           <Route
             path="/exercises/job/:job"

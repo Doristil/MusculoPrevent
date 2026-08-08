@@ -23,28 +23,36 @@ const shapes = {
 const backOnlyZones = new Set(["trapezes", "dos", "lombaires"]);
 const splitFaceBackZones = new Set(["epaules", "bras", "avant-bras", "main-poignet", "jambes", "mollets"]);
 
-function BaseBody({ x, back = false }) {
-  return <g className="body-base" transform={`translate(${x} 0)`}>
+function BaseBody({ x, back = false, sex = "male" }) {
+  const isFemale = sex === "female";
+  const torsoPath = isFemale
+    ? "M131 81c-20 5-37 15-50 31 8 10 18 17 29 21 1 20 4 39 2 58l-8 64c-2 19 8 33 27 41l2 30h34l2-30c19-8 29-22 27-41l-8-64c-2-19 1-38 2-58 11-4 21-11 29-21-13-16-30-26-50-31z"
+    : "M131 81c-20 5-37 15-50 31 8 10 18 17 29 21 1 20 4 39 1 60l-6 68c1 17 10 29 22 36l3 29h40l3-29c12-7 21-19 22-36l-6-68c-3-21 0-40 1-60 11-4 21-11 29-21-13-16-30-26-50-31z";
+  const legPath = isFemale
+    ? "M126 283c-12 27-13 65-3 102l7 27-3 88 22 9 2-127-1-96zM174 283c12 27 13 65 3 102l-7 27 3 88-22 9-2-127 1-96z"
+    : "M126 283c-13 28-14 67-4 105l8 24-3 88 22 9 2-127-1-96zM174 283c13 28 14 67 4 105l-8 24 3 88-22 9-2-127 1-96z";
+  return <g className={`body-base ${isFemale ? "body-female" : "body-male"}`} transform={`translate(${x} 0)`}>
     <ellipse className="body-head" cx="150" cy="46" rx="22" ry="29" />
+    {isFemale && <path className="body-hair" d={back ? "M127 35c1-22 45-22 46 0l2 48-10 4-5-29h-20l-5 29-10-4z" : "M127 35c2-22 44-22 46 0l1 28-9 4-3-18h-24l-3 18-9-4z"} />}
     {!back ? <g className="merchant-cap" transform="translate(0 -13)"><path className="cap-crown" d="M122 37c3-17 53-17 56 0l-2 13c-9 5-43 5-52 0z" /><path className="cap-band" d="M124 49c10 4 42 4 52 0v9c-12 4-40 4-52 0z" /><path className="cap-gold cap-gold-one" d="M126 51c12 3 36 3 48 0" /><path className="cap-gold cap-gold-two" d="M126 55c12 3 36 3 48 0" /><path className="cap-visor" d="M126 58c14 5 34 5 48 0 1 6-8 10-24 10s-25-4-24-10z" /><circle className="cap-badge" cx="150" cy="43" r="6" /><path className="cap-anchor" d="M150 39v7m-3-3h6m-7 2c1 4 8 4 10 0m-10 0c-2 0-3-2-3-3m10 3c2 0 3-2 3-3" /></g> : <g className="merchant-cap" transform="translate(0 -13)"><path className="cap-crown" d="M122 37c3-17 53-17 56 0l-2 19c-13 4-39 4-52 0z" /><path className="cap-band" d="M124 49c10 4 42 4 52 0v9c-12 4-40 4-52 0z" /><path className="cap-gold cap-gold-one" d="M126 51c12 3 36 3 48 0" /><path className="cap-gold cap-gold-two" d="M126 55c12 3 36 3 48 0" /></g>}
     <path className="body-neck" d="M137 69c1 7-1 12-6 17h38c-5-5-7-10-6-17z" />
-    <path className="body-torso" d="M131 81c-20 5-37 15-50 31 8 10 18 17 29 21 1 20 4 39 1 60l-6 68c1 17 10 29 22 36l3 29h40l3-29c12-7 21-19 22-36l-6-68c-3-21 0-40 1-60 11-4 21-11 29-21-13-16-30-26-50-31z" />
+    <path className="body-torso" d={torsoPath} />
     <path className="body-arm" d="M103 126c-14 16-20 41-18 66l2 67c1 17 7 31 17 42l11-5-4-77 10-54zM197 126c14 16 20 41 18 66l-2 67c-1 17-7 31-17 42l-11-5 4-77-10-54z" />
     <path className="body-hand" d="M87 291c-6 9-5 24 1 34l10 9 8-4-2-27zM213 291c6 9 5 24-1 34l-10 9-8-4 2-27z" />
-    <path className="body-leg" d="M126 283c-13 28-14 67-4 105l8 24-3 88 22 9 2-127-1-96zM174 283c13 28 14 67 4 105l-8 24 3 88-22 9-2-127 1-96z" />
+    <path className="body-leg" d={legPath} />
     <path className="body-foot" d="M127 499l22 10 10 8h-32zM173 499l-22 10-10 8h32z" />
     {!back && <g className="anatomy-lines body-face"><path d="M139 42h8M153 42h8M146 57q4 4 8 0" /><path d="M150 89v178M111 142c14 12 25 16 39 16s25-4 39-16M112 143c12 0 26 5 38 15M188 143c-12 0-26 5-38 15M119 169c11 7 21 10 31 10s20-3 31-10M121 250c10 8 19 11 29 11s19-3 29-11" /></g>}
     {back && <g className="anatomy-lines"><path className="spine" d="M150 88c-3 72-3 140 0 201" /><path d="M109 139c16 14 28 20 41 21 13-1 25-7 41-21M112 151c12 5 25 11 38 25M188 151c-12 5-25 11-38 25M112 258c13 13 25 19 38 20 13-1 25-7 38-20" /></g>}
   </g>;
 }
 
-export default function BodyMap({ zones, onSelect, selectedSlugs = [] }) {
+export default function BodyMap({ zones, onSelect, selectedSlugs = [], sex = "male" }) {
   const [active, setActive] = useState(null);
   const { t } = useTranslation();
   const activeZone = zones.find((zone) => zone.slug === active);
   return <section className="vector-map">
     <svg viewBox="0 0 670 535" role="img" aria-label={t("zoneMultiHelp")}>
-      <BaseBody x={0} /><BaseBody x={370} back />
+      <BaseBody x={0} sex={sex} /><BaseBody x={370} back sex={sex} />
       {zones.map((zone) => <g key={zone.slug} className={`muscle-zone${active === zone.slug ? " is-active" : ""}${selectedSlugs.includes(zone.slug) ? " is-selected" : ""}`} onMouseEnter={() => setActive(zone.slug)} onMouseLeave={() => setActive(null)} onClick={() => onSelect(zone)}>
         {shapes[zone.slug]?.map((d, index) => {
           const isBack = backOnlyZones.has(zone.slug) || (splitFaceBackZones.has(zone.slug) && index >= 2);

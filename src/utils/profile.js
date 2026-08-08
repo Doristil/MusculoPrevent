@@ -7,6 +7,7 @@ export const emptyProfile = {
   age: "",
   level: "",
   jobId: null,
+  sex: "male",
 };
 
 export function readProfile() {

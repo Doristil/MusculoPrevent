@@ -63,6 +63,7 @@
   .exercise-player .timer-ring{width:min(52vw,240px);padding:0}
   .exercise-player .timer-center{width:calc(100% - 38px);height:calc(100% - 38px)}
   .exercise-player .timer-center strong{font-size:clamp(2.45rem,10vw,3.5rem)}
+  .exercise-player .timer-ring-manual .timer-center strong{max-width:88%;font-size:clamp(1.45rem,6.2vw,2.25rem);line-height:1.04;overflow-wrap:anywhere}
   .exercise-player .timer-center span{margin-top:5px;font-size:9px}
   .exercise-player .timer-label{margin:11px 0 8px;font-size:10px}
   .exercise-player .series-dots{gap:6px}.exercise-player .series-dots span{width:9px;height:9px}

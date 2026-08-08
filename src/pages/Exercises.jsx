@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { exerciseHref, getExerciseScope } from "../utils/exerciseScope";
 import catalogTranslations from "../data/catalogTranslations";
 import { useTranslation } from "../context/LanguageContext";
@@ -22,9 +22,14 @@ export default function Exercises() {
   const [profile, setProfile] = useState(getActiveProfile);
   const [customExerciseIds, setCustomExerciseIds] = useState([]);
   const [sessionProfile, setSessionProfile] = useState("balanced");
+  const [searchParams] = useSearchParams();
   const { job: jobId, zone: zoneSlug, zones: zonesSlug } = useParams();
   const scope = jobId ? "job" : zonesSlug ? "zones" : "zone";
   const value = jobId ?? zonesSlug ?? zoneSlug;
+  const mode = searchParams.get("mode") ?? "list";
+  const showAdapted = mode === "adapted";
+  const showCustom = mode === "custom";
+  const showList = mode === "list" || mode === "custom";
   const { selectedZones, exercises: filteredExercises } = getExerciseScope(scope, value);
   const selectedZonesKey = selectedZones.join("|");
   const context = jobId
@@ -111,7 +116,7 @@ export default function Exercises() {
         </div>
       </div>
 
-      <section className="session-complexity" aria-label={t("sessionComplexity")}>
+      {showAdapted && <section className="session-complexity" aria-label={t("sessionComplexity")}>
         <div className="session-complexity-heading">
           <p>{t("sessionComplexity")}</p>
           <span>{t("sessionComplexityHelp")}</span>
@@ -124,9 +129,9 @@ export default function Exercises() {
             </button>
           ))}
         </div>
-      </section>
+      </section>}
 
-      <section className="custom-session-builder" aria-label={t("customSession")}>
+      {showCustom && <section className="custom-session-builder" aria-label={t("customSession")}>
         <div>
           <p>{t("customSession")}</p>
           <span>{t("customSessionHelp")}</span>
@@ -136,9 +141,9 @@ export default function Exercises() {
           {customExercises.length > 0 && <button className="custom-session-clear" type="button" onClick={() => setCustomExerciseIds([])}>{t("clearSelection")}</button>}
           <button className="custom-session-start" type="button" disabled={!customExercises.length} onClick={startCustomSession}>{t("startCustomSession")}</button>
         </div>
-      </section>
+      </section>}
 
-      <section className="session-picker" aria-label={t("adaptedSession")}>
+      {showAdapted && <section className="session-picker" aria-label={t("adaptedSession")}>
         <div className="session-picker-heading">
           <p>{t("adaptedSession")}</p>
           <span>{t("adaptedSessionHelp")}{levelLabel ? ` · ${levelLabel}` : ""}</span>
@@ -168,9 +173,9 @@ export default function Exercises() {
             <button type="button" disabled={!session.exercises.length} onClick={() => startTimedSession(session)}>{t("start")}</button>
           </article>
         ))}</div>
-      </section>
+      </section>}
 
-      {jobId && (
+      {showList && jobId && (
         <nav className="zone-menu" aria-label={t("quickZoneAccess")}>
           <span className="zone-menu-label">{t("goToZone")}</span>
           <div className="zone-menu-links">
@@ -183,6 +188,7 @@ export default function Exercises() {
         </nav>
       )}
 
+      {showList && <>
       <div className="exercise-list-heading">
         <p>{t("exerciseListEyebrow")}</p>
         <h2>{t("exerciseListTitle")}</h2>
@@ -240,6 +246,7 @@ export default function Exercises() {
           ))}
         </section>
       ))}
+      </>}
 
     </div>
 

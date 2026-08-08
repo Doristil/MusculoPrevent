@@ -29,12 +29,16 @@ function Job() {
     const [selectedJob, setSelectedJob] = useState(savedProfile.jobId);
     const [firstName, setFirstName] = useState(savedProfile.firstName);
     const [age, setAge] = useState(savedProfile.age);
+    const [sex, setSex] = useState(savedProfile.sex ?? "male");
     const [isAgeValidated, setIsAgeValidated] = useState(false);
     const [level, setLevel] = useState(savedProfile.level);
     const [archive, setArchive] = useState(readProfileArchive);
     const [backupMessage, setBackupMessage] = useState("");
     const backupInputRef = useRef(null);
     const { t, language, setLanguage } = useTranslation();
+    const sexCopy = language === "en"
+        ? { title: "Sex", female: "Female", male: "Male" }
+        : { title: "Sexe", female: "Femme", male: "Homme" };
     const [theme, setTheme] = useState(() => localStorage.getItem("musculoprevent-theme") ?? "light");
     const ageNumber = Number(age);
     const ageMessage = isAgeValidated && age !== "" && ageNumber < 16 ? t("tooYoung") : isAgeValidated && age !== "" && ageNumber > 90 ? t("tooOld") : "";
@@ -47,10 +51,10 @@ function Job() {
 
     const continueToExercises = () => {
         if (selectedJob) {
-            const profile = archiveProfile({ firstName, age, level, jobId: selectedJob, archiveId: savedProfile.archiveId });
+            const profile = archiveProfile({ firstName, age, sex, level, jobId: selectedJob, archiveId: savedProfile.archiveId });
             setSavedProfile(profile);
             setArchive(readProfileArchive());
-            navigate(`/exercises/job/${selectedJob}`);
+            navigate(`/selection/job/${selectedJob}`);
         }
     };
 
@@ -60,6 +64,7 @@ function Job() {
         setSelectedJob(null);
         setFirstName("");
         setAge("");
+        setSex("male");
         setIsAgeValidated(false);
         setLevel("");
     };
@@ -70,6 +75,7 @@ function Job() {
         setSelectedJob(profile.jobId);
         setFirstName(profile.firstName);
         setAge(profile.age);
+        setSex(profile.sex ?? "male");
         setIsAgeValidated(false);
         setLevel(profile.level);
     };
@@ -97,7 +103,7 @@ function Job() {
         const imported = importLocalBackup(await file.text());
         if (imported) {
             const nextProfile = readProfile();
-            setSavedProfile(nextProfile); setArchive(readProfileArchive()); setSelectedJob(nextProfile.jobId); setFirstName(nextProfile.firstName); setAge(nextProfile.age); setLevel(nextProfile.level);
+            setSavedProfile(nextProfile); setArchive(readProfileArchive()); setSelectedJob(nextProfile.jobId); setFirstName(nextProfile.firstName); setAge(nextProfile.age); setSex(nextProfile.sex ?? "male"); setLevel(nextProfile.level);
         }
         setBackupMessage(imported ? t("backupRestored") : t("backupInvalid"));
         event.target.value = "";
@@ -168,6 +174,14 @@ function Job() {
                                     {levelTranslations[language]?.[index] ?? option}
                                 </button>
                             ))}
+                        </div>
+                    </fieldset>
+
+                    <fieldset className="profile-field profile-sex">
+                        <legend>{sexCopy.title}</legend>
+                        <div className="profile-level-options" role="group" aria-label={sexCopy.title}>
+                            <button type="button" className={sex === "female" ? "is-selected" : ""} aria-pressed={sex === "female"} onClick={() => setSex("female")}>{sexCopy.female}</button>
+                            <button type="button" className={sex === "male" ? "is-selected" : ""} aria-pressed={sex === "male"} onClick={() => setSex("male")}>{sexCopy.male}</button>
                         </div>
                     </fieldset>
                 </div>

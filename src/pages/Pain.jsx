@@ -22,7 +22,7 @@ export default function Pain() {
       <Icon className="pain-icon" size={23} />
       <h2>{t(`pain_${key}_title`)}</h2>
       <p>{t(`pain_${key}_text`)}</p>
-      <div className="pain-zone-links">{zones.map((zone) => <button key={zone} type="button" onClick={() => navigate(`/exercises/body/${zone}`)}>{t(`zone_${zone}`)} <ArrowRight size={15} /></button>)}</div>
+      <div className="pain-zone-links">{zones.map((zone) => <button key={zone} type="button" onClick={() => navigate(`/selection/body/${zone}`)}>{t(`zone_${zone}`)} <ArrowRight size={15} /></button>)}</div>
     </article>)}</div>
   </section>;
 }
