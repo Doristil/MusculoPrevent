@@ -10,8 +10,8 @@
 .profile-backup{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-top:14px;padding:14px 17px;border:1px solid #e5e7eb;border-radius:18px;background:#fff;text-align:left}.profile-backup>div:first-child{display:grid;gap:3px}.profile-backup strong{color:var(--text);font-size:13px}.profile-backup span,.profile-backup small{color:var(--text-secondary);font-size:12px;line-height:1.35}.profile-backup-actions{display:flex;gap:7px}.profile-backup-actions button{min-height:36px;padding:0 11px;border:1px solid #dce3ed;border-radius:999px;background:#fff;color:var(--text);font-size:11px;font-weight:800}.profile-backup-actions button:hover{border-color:#4a53ff;color:#3e47dc}.profile-backup input{display:none}.profile-backup>small{grid-column:1/-1;color:#3e47dc}
 .profile-form { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:30px auto 0; text-align:left; }
 .profile-field { display:grid; gap:8px; }
-.profile-level { min-width:0; margin:0; padding:0; border:0; }
-.profile-level legend { display:block; width:100%; margin:0 0 8px; padding:0; line-height:normal; }
+.profile-level,.profile-sex { min-width:0; margin:0; padding:0; border:0; }
+.profile-level legend,.profile-sex legend { display:block; width:100%; margin:0 0 8px; padding:0; line-height:normal; }
 .profile-field-full { grid-column:1 / -1; }
 .profile-field input, .profile-field select { width:100%; height:48px; padding:0 14px; border:1px solid #dfe3ea; border-radius:10px; background:#fff; color:#16161a; font:inherit; font-size:16px; outline:none; }
 .profile-field input:focus, .profile-field select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,.1); }
