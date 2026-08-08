@@ -12,6 +12,8 @@
 .body-base .body-hand, .body-base .body-foot { fill: #e6ebf0; }
 .body-base .body-hair { fill: #dce2ea; stroke: #c8d0db; stroke-width: 1.15; }
 .body-base.body-female .body-torso { fill: #edf1f5; }
+.body-base.body-female .body-arm { fill:#eef1f5; }
+.body-base .body-feminine-contours { stroke:#b7c2d1; stroke-width:1.05; }
 .merchant-cap { stroke: #202a38; stroke-width: .8; }
 .merchant-cap .cap-crown { fill: #f7f8fa; }
 .merchant-cap .cap-band, .merchant-cap .cap-visor, .merchant-cap .cap-badge { fill: #172033; }
